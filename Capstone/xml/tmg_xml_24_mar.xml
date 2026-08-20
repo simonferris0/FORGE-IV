@@ -1,0 +1,1976 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://community.rti.com/schema/6.1.1/rti_dds_profiles.xsd" version="6.1.1">
+    <!-- *********************************************************** -->
+    <!-- Types:  This section generated using rtiddsgen -convertToXml  -->
+    <!-- *********************************************************** -->
+    <types>
+      <module name="tms">
+        <module name="topic">
+          <const name="TOPIC_HEARTBEAT" type="string" value="&quot;Heartbeat&quot;"/>
+          <const name="TOPIC_DEVICE_INFO" type="string" value="&quot;DeviceInfo&quot;"/>
+          <const name="TOPIC_DEVICE_ICON" type="string" value="&quot;DeviceIcon&quot;"/>
+          <const name="TOPIC_IDENTITY_NICKNAME_STATE" type="string" value="&quot;IdentityNicknameState&quot;"/>
+          <const name="TOPIC_IDENTITY_NICKNAME_REQUEST" type="string" value="&quot;IdentityNicknameRequest&quot;"/>
+          <const name="TOPIC_OPERATOR_POWER_CONNECTION_STATE" type="string" value="&quot;OperatorPowerConnectionState&quot;"/>
+          <const name="TOPIC_DISCOVERED_POWER_CONNECTION_STATE" type="string" value="&quot;DiscoveredPowerConnectionState&quot;"/>
+          <const name="TOPIC_MICROGRID_POWER_CONNECTION_STATE" type="string" value="&quot;MicrogridPowerConnectionState&quot;"/>
+          <const name="TOPIC_ACTIVE_DIAGNOSTIC_STATE" type="string" value="&quot;ActiveDiagnosticState&quot;"/>
+          <const name="TOPIC_CLOCK_STATE" type="string" value="&quot;ClockState&quot;"/>
+          <const name="TOPIC_ACTIVE_MICROGRID_CONTROLLER_STATE" type="string" value="&quot;ActiveMicrogridControllerState&quot;"/>
+          <const name="TOPIC_AC_MEASUREMENT_UPDATE" type="string" value="&quot;AcMeasurementUpdate&quot;"/>
+          <const name="TOPIC_POWER_PORT_STATE" type="string" value="&quot;PowerPortState&quot;"/>
+          <const name="TOPIC_POWER_SWITCH_REQUEST" type="string" value="&quot;PowerSwitchRequest&quot;"/>
+          <const name="TOPIC_ENERGY_START_STOP_STATE" type="string" value="&quot;EnergyStartStopState&quot;"/>
+          <const name="TOPIC_ENERGY_START_STOP_REQUEST" type="string" value="&quot;EnergyStartStopRequest&quot;"/>
+          <const name="TOPIC_AC_LOAD_SHARING_STATE" type="string" value="&quot;AcLoadSharingState&quot;"/>
+          <const name="TOPIC_AC_LOAD_SHARING_REQUEST" type="string" value="&quot;AcLoadSharingRequest&quot;"/>
+          <const name="TOPIC_CONTROL_HARDWARE_UPDATE" type="string" value="&quot;ControlHardwareUpdate&quot;"/>
+          <const name="TOPIC_POWER_HARDWARE_UPDATE" type="string" value="&quot;PowerHardwareUpdate&quot;"/>
+          <const name="TOPIC_STORAGE_UPDATE" type="string" value="&quot;StorageUpdate&quot;"/>
+          <const name="TOPIC_REPLY" type="string" value="&quot;Reply&quot;"/>
+          <const name="TOPIC_CONTROL_PARAMETER_STATE" type="string" value="&quot;ControlParameterState&quot;"/>
+          <const name="TOPIC_CONTROL_PARAMETER_REQUEST" type="string" value="&quot;ControlParameterRequest&quot;"/>
+          <const name="TOPIC_METRIC_PARAMETER_STATE" type="string" value="&quot;MetricParameterState&quot;"/>
+          <const name="TOPIC_AUTHORIZATION_TO_ENERGIZE_REPLY" type="string" value="&quot;AuthorizationToEnergizeReply&quot;"/>
+          <const name="TOPIC_AUTHORIZATION_TO_ENERGIZE_REQUEST" type="string" value="&quot;AuthorizationToEnergizeRequest&quot;"/>
+          <const name="TOPIC_AUTHORIZATION_TO_ENERGIZE_RESULT" type="string" value="&quot;AuthorizationToEnergizeResult&quot;"/>
+          <const name="TOPIC_OPERATOR_INTENT_STATE" type="string" value="&quot;OperatorIntentState&quot;"/>
+          <const name="TOPIC_OPERATOR_INTENT_REQUEST" type="string" value="&quot;OperatorIntentRequest&quot;"/>
+          <const name="TOPIC_DEVICE_GROUNDING_STATE" type="string" value="&quot;GroundingCircuitState&quot;"/>
+          <const name="TOPIC_GROUNDING_CIRCUIT_REQUEST" type="string" value="&quot;GroundingCircuitRequest&quot;"/>
+          <const name="TOPIC_DC_MEASUREMENT_UPDATE" type="string" value="&quot;DcMeasurementUpdate&quot;"/>
+          <const name="TOPIC_DC_LOAD_SHARING_REQUEST" type="string" value="&quot;DcLoadSharingRequest&quot;"/>
+          <const name="TOPIC_AC_SUMMARY_MEASUREMENT_UPDATE" type="string" value="&quot;AcSummaryMeasurementUpdate&quot;"/>
+          <const name="TOPIC_DC_LOAD_SHARING_STATE" type="string" value="&quot;DcLoadSharingState&quot;"/>
+          <const name="TOPIC_DC_SUMMARY_MEASUREMENT_UPDATE" type="string" value="&quot;DcSummaryMeasurementUpdate&quot;"/>
+          <const name="TOPIC_GRID_SUPPORT_REQUEST" type="string" value="&quot;GridSupportRequest&quot;"/>
+          <const name="TOPIC_GRID_SUPPORT_STATE" type="string" value="&quot;GridSupportState&quot;"/>
+          <const name="TOPIC_STORAGE_STATE" type="string" value="&quot;StorageState&quot;"/>
+        </module>
+        <const name="TMS_VERSION" type="string" value="&quot;1.1.0&quot;"/>
+        <const name="TopicName_MINLEN" type="uint32" value="1"/>
+        <const name="TopicName_MAXLEN" type="uint32" value="64"/>
+        <typedef name="TopicName" type="string" stringMaxLength="tms::TopicName_MAXLEN"/>
+        <const name="TopicList_MINLEN" type="uint32" value="0"/>
+        <const name="TopicList_MAXLEN" type="uint32" value="64"/>
+        <typedef name="TopicList" type="nonBasic" nonBasicTypeName="tms::TopicName" sequenceMaxLength="tms::TopicList_MAXLEN"/>
+        <enum name="CableSenseStatus">
+          <enumerator name="CS_UNKNOWN"/>
+          <enumerator name="CS_DISCONNECTED"/>
+          <enumerator name="CS_CONNECTED"/>
+        </enum>
+        <enum name="CircuitContinuity">
+          <enumerator name="CC_UNKNOWN"/>
+          <enumerator name="CC_OPEN"/>
+          <enumerator name="CC_CLOSED"/>
+          <enumerator name="CC_INCONSISTENT"/>
+        </enum>
+        <enum name="ClockMonotonicPersistenceType">
+          <enumerator name="CMPT_UNKNOWN"/>
+          <enumerator name="CMPT_RESET"/>
+          <enumerator name="CMPT_ACCUMULATE"/>
+          <enumerator name="CMPT_OTHER"/>
+        </enum>
+        <enum name="DesiredCircuitContinuity">
+          <enumerator name="DCC_UNKNOWN"/>
+          <enumerator name="DCC_OPEN"/>
+          <enumerator name="DCC_CLOSED"/>
+          <enumerator name="DCC_SYNC_CLOSED"/>
+          <enumerator name="DCC_CLOSED_INTERNAL"/>
+          <enumerator name="DCC_NO_CHANGE"/>
+        </enum>
+        <enum name="DeviceRole">
+          <enumerator name="ROLE_UNKNOWN"/>
+          <enumerator name="ROLE_MICROGRID_CONTROLLER"/>
+          <enumerator name="ROLE_SOURCE"/>
+          <enumerator name="ROLE_LOAD"/>
+          <enumerator name="ROLE_STORAGE"/>
+          <enumerator name="ROLE_DISTRIBUTION"/>
+          <enumerator name="ROLE_MICROGRID_DASHBOARD"/>
+          <enumerator name="ROLE_CONVERSION"/>
+          <enumerator name="ROLE_MONITOR"/>
+        </enum>
+        <enum name="DtcSeverity">
+          <enumerator name="SEV_UNKNOWN"/>
+          <enumerator name="SEV_1_CLEAR"/>
+          <enumerator name="SEV_2_INFORMATIVE"/>
+          <enumerator name="SEV_3_PREVENTATIVE"/>
+          <enumerator name="SEV_4_DEGRADED"/>
+          <enumerator name="SEV_5_WARNING"/>
+          <enumerator name="SEV_6_MINOR"/>
+          <enumerator name="SEV_7_MAJOR"/>
+          <enumerator name="SEV_8_CRITICAL"/>
+          <enumerator name="SEV_9_FATAL"/>
+          <enumerator name="SEV_10_HUMAN_SAFETY"/>
+        </enum>
+        <enum name="EnergyStartStopLevel">
+          <enumerator name="ESSL_UNKNOWN"/>
+          <enumerator name="ESSL_ANY"/>
+          <enumerator name="ESSL_OFF"/>
+          <enumerator name="ESSL_WARM"/>
+          <enumerator name="ESSL_IDLE"/>
+          <enumerator name="ESSL_READY"/>
+          <enumerator name="ESSL_READY_SYNCED"/>
+          <enumerator name="ESSL_OPERATIONAL"/>
+        </enum>
+        <const name="EnergyStartStopLevelSequence_MINLEN" type="uint32" value="0"/>
+        <const name="EnergyStartStopLevelSequence_MAXLEN" type="uint32" value="8"/>
+        <typedef name="EnergyStartStopLevelSequence" type="nonBasic" nonBasicTypeName="tms::EnergyStartStopLevel" sequenceMaxLength="tms::EnergyStartStopLevelSequence_MAXLEN"/>
+        <enum name="GroundFaultDetection">
+          <enumerator name="GFD_UNKNOWN"/>
+          <enumerator name="GFD_NOT_APPLICABLE"/>
+          <enumerator name="GFD_NONE"/>
+          <enumerator name="GFD_ANY"/>
+          <enumerator name="GFD_A"/>
+          <enumerator name="GFD_B"/>
+          <enumerator name="GFD_C"/>
+          <enumerator name="GFD_DCPOS"/>
+          <enumerator name="GFD_DCNEG"/>
+        </enum>
+        <enum name="GroundingDesignType">
+          <enumerator name="GROUNDING_UNKNOWN"/>
+          <enumerator name="GROUNDING_UNGROUNDED"/>
+          <enumerator name="GROUNDING_SOLID"/>
+          <enumerator name="GROUNDING_HIGH_RESISTANCE"/>
+          <enumerator name="GROUNDING_LOW_RESISTANCE"/>
+          <enumerator name="GROUNDING_REACTANCE"/>
+        </enum>
+        <enum name="OperatingMode">
+          <enumerator name="OPM_UNKNOWN"/>
+          <enumerator name="OPM_NORMAL"/>
+          <enumerator name="OPM_EMERGENCY"/>
+          <enumerator name="OPM_SILENT_WATCH"/>
+        </enum>
+        <enum name="OperatorPriorityType">
+          <enumerator name="OPT_UNKNOWN"/>
+          <enumerator name="OPT_NEVER_OPERATE"/>
+          <enumerator name="OPT_ALWAYS_OPERATE"/>
+          <enumerator name="OPT_NUMERIC_RANK"/>
+        </enum>
+        <enum name="OperatorIntentType">
+          <enumerator name="OIT_UNKNOWN"/>
+          <enumerator name="OIT_DEFAULT_INTENT"/>
+          <enumerator name="OIT_OPERATOR_DEFINED"/>
+        </enum>
+        <enum name="PowerConnectionDetectionType">
+          <enumerator name="PCDT_UNKNOWN"/>
+          <enumerator name="PCDT_OPERATOR"/>
+          <enumerator name="PCDT_CABLE_ID"/>
+          <enumerator name="PCDT_PROBE"/>
+          <enumerator name="PCDT_CORRELATION"/>
+          <enumerator name="PCDT_COMMUNICATIONS"/>
+          <enumerator name="PCDT_HISTORY"/>
+        </enum>
+        <enum name="ReplyCode">
+          <enumerator name="REPLY_UNKNOWN"/>
+          <enumerator name="REPLY_OK"/>
+          <enumerator name="REPLY_BAD_REQUEST"/>
+          <enumerator name="REPLY_METHOD_NOT_ALLOWED"/>
+          <enumerator name="REPLY_CONFLICT"/>
+          <enumerator name="REPLY_GONE"/>
+          <enumerator name="REPLY_PRECONDITION_FAILED"/>
+          <enumerator name="REPLY_INTERNAL_SERVER_ERROR"/>
+          <enumerator name="REPLY_NOT_IMPLEMENTED"/>
+          <enumerator name="REPLY_SERVICE_UNAVAILABLE"/>
+          <enumerator name="REPLY_PENDING_AUTHORIZATION"/>
+          <enumerator name="REPLY_NOT_MASTER"/>
+        </enum>
+        <enum name="CircuitWiring">
+          <enumerator name="WIRING_UNKNOWN"/>
+          <enumerator name="WIRING_AC_SINGLE"/>
+          <enumerator name="WIRING_AC_SPLIT"/>
+          <enumerator name="WIRING_AC_3WYE"/>
+          <enumerator name="WIRING_AC_3DELTA"/>
+          <enumerator name="WIRING_DC"/>
+          <enumerator name="WIRING_DC_3WIRE"/>
+        </enum>
+        <enum name="PowerConnectorPolarity">
+          <enumerator name="POLARITY_UNKNOWN"/>
+          <enumerator name="POLARITY_PIN"/>
+          <enumerator name="POLARITY_SOCKET"/>
+          <enumerator name="POLARITY_UNIVERSAL"/>
+        </enum>
+        <enum name="PowerConnectorType">
+          <enumerator name="CONNECTOR_UNKNOWN"/>
+          <enumerator name="CONNECTOR_TERMINAL_BLOCK"/>
+          <enumerator name="CONNECTOR_MILSTD"/>
+          <enumerator name="CONNECTOR_NEMA5"/>
+          <enumerator name="CONNECTOR_CAMLOCK"/>
+          <enumerator name="CONNECTOR_POWERLOCK"/>
+          <enumerator name="CONNECTOR_IEC60309"/>
+          <enumerator name="CONNECTOR_J1772"/>
+          <enumerator name="CONNECTOR_POWERLOK"/>
+          <enumerator name="CONNECTOR_MILSTD1651"/>
+          <enumerator name="CONNECTOR_MILDTL22992"/>
+          <enumerator name="CONNECTOR_MILDTL53126"/>
+          <enumerator name="CONNECTOR_OTHER"/>
+          <enumerator name="CONNECTOR_METER"/>
+          <enumerator name="CONNECTOR_BUS"/>
+        </enum>
+        <enum name="PowerPortDirectionality">
+          <enumerator name="PPD_UNKNOWN"/>
+          <enumerator name="PPD_NONE"/>
+          <enumerator name="PPD_IN"/>
+          <enumerator name="PPD_OUT"/>
+          <enumerator name="PPD_IN_OUT"/>
+        </enum>
+        <enum name="PowerConnectorFeature">
+          <enumerator name="PCF_UNKNOWN"/>
+          <enumerator name="PCF_CABLE_SENSE"/>
+          <enumerator name="PCF_CABLE_ID_READER"/>
+          <enumerator name="PCF_CABLE_MEASUREMENT"/>
+          <enumerator name="PCF_COMMUNICATION"/>
+          <enumerator name="PCF_TOPOLOGY_DISCOVERY"/>
+        </enum>
+        <enum name="PowerSwitchFeature">
+          <enumerator name="PSF_UNKNOWN"/>
+          <enumerator name="PSF_MANUAL_OPEN"/>
+          <enumerator name="PSF_MANUAL_CLOSE"/>
+          <enumerator name="PSF_AUTO_OPEN"/>
+          <enumerator name="PSF_AUTO_CLOSE"/>
+          <enumerator name="PSF_REQUEST_OPEN"/>
+          <enumerator name="PSF_REQUEST_CLOSE"/>
+          <enumerator name="PSF_LOCK"/>
+          <enumerator name="PSF_RECLOSER"/>
+          <enumerator name="PSF_BREAKER"/>
+          <enumerator name="PSF_GFI"/>
+          <enumerator name="PSF_ARC_FLASH"/>
+          <enumerator name="PSF_SYNCHRONIZER"/>
+          <enumerator name="PSF_SURGE"/>
+          <enumerator name="PSF_SWITCH_CONDITIONS"/>
+        </enum>
+        <enum name="PowerSwitchReason">
+          <enumerator name="PSR_UNKNOWN"/>
+          <enumerator name="PSR_STARTUP"/>
+          <enumerator name="PSR_MANUAL"/>
+          <enumerator name="PSR_AUTO"/>
+          <enumerator name="PSR_REQUEST"/>
+          <enumerator name="PSR_OPERATOR_LOGIN"/>
+          <enumerator name="PSR_AUTO_PROTECTION"/>
+          <enumerator name="PSR_AUTO_LOAD_SHED"/>
+          <enumerator name="PSR_AUTO_VOLTAGE_LOSS"/>
+          <enumerator name="PSR_AUTO_COMMS_LOSS"/>
+          <enumerator name="PSR_MALFUNCTION"/>
+        </enum>
+        <enum name="SourceFeature">
+          <enumerator name="SRCF_UNKNOWN"/>
+          <enumerator name="SRCF_GENSET"/>
+          <enumerator name="SRCF_FUEL_CELL"/>
+          <enumerator name="SRCF_SOLAR"/>
+          <enumerator name="SRCF_WIND"/>
+          <enumerator name="SRCF_VEHICLE"/>
+        </enum>
+        <enum name="LoadFeature">
+          <enumerator name="LOADF_UNKNOWN"/>
+          <enumerator name="LOADF_DEMAND_RESPONSE"/>
+          <enumerator name="LOADF_CHANGE_NOTIFICATION"/>
+          <enumerator name="LOADF_SOFT_START"/>
+        </enum>
+        <enum name="DistributionFeature">
+          <enumerator name="DISTF_UNKNOWN"/>
+          <enumerator name="DISTF_CLAMP_METER"/>
+          <enumerator name="DISTF_TAP_METER"/>
+          <enumerator name="DISTF_PCC"/>
+          <enumerator name="DISTF_FEEDER"/>
+          <enumerator name="DISTF_DISTRIBUTION"/>
+        </enum>
+        <enum name="ConversionFeature">
+          <enumerator name="CONVF_UNKNOWN"/>
+          <enumerator name="CONVF_ACTIVE"/>
+          <enumerator name="CONVF_PASSIVE"/>
+        </enum>
+        <enum name="MicrogridDashboardFeature">
+          <enumerator name="MDF_UNKNOWN"/>
+          <enumerator name="MDF_DISPLAY"/>
+          <enumerator name="MDF_CONTROL"/>
+        </enum>
+        <enum name="MicrogridControllerFeature">
+          <enumerator name="MCF_UNKNOWN"/>
+          <enumerator name="MCF_FIXED"/>
+          <enumerator name="MCF_GENERAL"/>
+        </enum>
+        <enum name="StorageFeature">
+          <enumerator name="STORF_UNKNOWN"/>
+          <enumerator name="STORF_GRID"/>
+          <enumerator name="STORF_SUBCYCLE_UPS"/>
+          <enumerator name="STORF_CHARGING"/>
+          <enumerator name="STORF_VEHICLE"/>
+        </enum>
+        <enum name="ConfigId">
+          <enumerator name="CONFIG_UNKNOWN"/>
+          <enumerator name="CONFIG_DEFAULTS"/>
+          <enumerator name="CONFIG_ACTIVE"/>
+          <enumerator name="CONFIG_ON_REBOOT"/>
+          <enumerator name="CONFIG_ON_COMMS_LOSS"/>
+        </enum>
+        <enum name="FailureModeIndicator">
+          <enumerator name="FMI_UNKNOWN"/>
+          <enumerator name="FMI_HIGH_MOST_SEVERE_HIGH"/>
+          <enumerator name="FMI_HIGH_MOST_SEVERE_LOW"/>
+          <enumerator name="FMI_DATA_ERRATIC"/>
+          <enumerator name="FMI_VOLTAGE_HIGH"/>
+          <enumerator name="FMI_VOLTAGE_LOW"/>
+          <enumerator name="FMI_CURRENT_LOW"/>
+          <enumerator name="FMI_CURRENT_HIGH"/>
+          <enumerator name="FMI_NOT_RESPONDING"/>
+          <enumerator name="FMI_ABNORMAL_FREQUENCY"/>
+          <enumerator name="FMI_ABNORMAL_UPDATE_RATE"/>
+          <enumerator name="FMI_ABNORMAL_RATE_OF_CHARGE"/>
+          <enumerator name="FMI_FAILURE_CODE_NOT_IDENTIFIABLE"/>
+          <enumerator name="FMI_BAD_INTELLIGENT_DEVICE"/>
+          <enumerator name="FMI_OUT_OF_CALIBRATION"/>
+          <enumerator name="FMI_SPECIAL_INSTRUCTIONS"/>
+          <enumerator name="FMI_HIGH_LEAST_SEVERE"/>
+          <enumerator name="FMI_HIGH_MODERATELY_SEVERE"/>
+          <enumerator name="FMI_LOW_LEAST_SEVERE"/>
+          <enumerator name="FMI_LOW_MODERATELY_SEVERE"/>
+          <enumerator name="FMI_RECEIVED_DATA_ERROR"/>
+          <enumerator name="FMI_DATA_DRIFTED_HIGH"/>
+          <enumerator name="FMI_DATA_DRIFTED_LOW"/>
+          <enumerator name="FMI_CONDITION_EXISTS"/>
+        </enum>
+        <typedef name="PowerPortNumber" type="int32"/>
+        <const name="MAX_PORTS" type="uint32" value="64"/>
+        <const name="INVALID_PORT_NUMBER" type="int32" value="-1"/>
+        <const name="Identity_MINLEN" type="uint32" value="1"/>
+        <const name="Identity_MAXLEN" type="uint32" value="32"/>
+        <typedef name="Identity" type="string" stringMaxLength="tms::Identity_MAXLEN"/>
+        <const name="IdentitySequence_MINLEN" type="uint32" value="0"/>
+        <const name="IdentitySequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+        <typedef name="IdentitySequence" type="nonBasic" nonBasicTypeName="tms::Identity" sequenceMaxLength="tms::IdentitySequence_MAXLEN"/>
+        <const name="GlobalTradeItemNumber_LEN" type="uint32" value="14"/>
+        <typedef name="GlobalTradeItemNumber" type="char8" arrayDimensions="tms::GlobalTradeItemNumber_LEN"/>
+        <typedef name="GroundingCircuitNumber" type="int32"/>
+        <const name="MAX_GROUNDING_CIRCUITS" type="int32" value="8"/>
+        <const name="INVALID_GROUNDING_CIRCUIT_NUMBER" type="int32" value="-1"/>
+        <const name="NatoStockNumber_LEN" type="uint32" value="13"/>
+        <typedef name="NatoStockNumber" type="char8" arrayDimensions="tms::NatoStockNumber_LEN"/>
+        <const name="String16_MINLEN" type="uint32" value="0"/>
+        <const name="String16_MAXLEN" type="uint32" value="16"/>
+        <typedef name="String16" type="string" stringMaxLength="tms::String16_MAXLEN"/>
+        <const name="String32_MINLEN" type="uint32" value="0"/>
+        <const name="String32_MAXLEN" type="uint32" value="32"/>
+        <typedef name="String32" type="string" stringMaxLength="tms::String32_MAXLEN"/>
+        <const name="String1_32_MINLEN" type="uint32" value="1"/>
+        <const name="String1_32_MAXLEN" type="uint32" value="32"/>
+        <typedef name="String1_32" type="string" stringMaxLength="tms::String1_32_MAXLEN"/>
+        <typedef name="SuspectParameterNumber" type="uint32"/>
+        <typedef name="TapNumber" type="int32"/>
+        <const name="MAX_TAPS" type="int32" value="64"/>
+        <const name="PowerPortNumberSequence_MINLEN" type="uint32" value="0"/>
+        <const name="PowerPortNumberSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+        <typedef name="PowerPortNumberSequence" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber" sequenceMaxLength="tms::PowerPortNumberSequence_MAXLEN"/>
+        <const name="ConversionFeatureSequence_MINLEN" type="uint32" value="0"/>
+        <const name="ConversionFeatureSequence_MAXLEN" type="uint32" value="3"/>
+        <typedef name="ConversionFeatureSequence" type="nonBasic" nonBasicTypeName="tms::ConversionFeature" sequenceMaxLength="tms::ConversionFeatureSequence_MAXLEN"/>
+        <const name="OctetSequence_MINLEN" type="uint32" value="1"/>
+        <const name="OctetSequence_MAXLEN" type="uint32" value="32768"/>
+        <typedef name="OctetSequence" type="byte" sequenceMaxLength="tms::OctetSequence_MAXLEN"/>
+        <const name="DistributionFeatureSequence_MINLEN" type="uint32" value="0"/>
+        <const name="DistributionFeatureSequence_MAXLEN" type="uint32" value="6"/>
+        <typedef name="DistributionFeatureSequence" type="nonBasic" nonBasicTypeName="tms::DistributionFeature" sequenceMaxLength="tms::DistributionFeatureSequence_MAXLEN"/>
+        <const name="PowerConnectorFeatureSequence_MINLEN" type="uint32" value="0"/>
+        <const name="PowerConnectorFeatureSequence_MAXLEN" type="uint32" value="6"/>
+        <typedef name="PowerConnectorFeatureSequence" type="nonBasic" nonBasicTypeName="tms::PowerConnectorFeature" sequenceMaxLength="tms::PowerConnectorFeatureSequence_MAXLEN"/>
+        <const name="PowerSwitchFeatureSequence_MINLEN" type="uint32" value="0"/>
+        <const name="PowerSwitchFeatureSequence_MAXLEN" type="uint32" value="15"/>
+        <typedef name="PowerSwitchFeatureSequence" type="nonBasic" nonBasicTypeName="tms::PowerSwitchFeature" sequenceMaxLength="tms::PowerSwitchFeatureSequence_MAXLEN"/>
+        <const name="LoadFeatureSequence_MINLEN" type="uint32" value="0"/>
+        <const name="LoadFeatureSequence_MAXLEN" type="uint32" value="4"/>
+        <typedef name="LoadFeatureSequence" type="nonBasic" nonBasicTypeName="tms::LoadFeature" sequenceMaxLength="tms::LoadFeatureSequence_MAXLEN"/>
+        <const name="MicrogridControllerFeatureSequence_MINLEN" type="uint32" value="1"/>
+        <const name="MicrogridControllerFeatureSequence_MAXLEN" type="uint32" value="3"/>
+        <typedef name="MicrogridControllerFeatureSequence" type="nonBasic" nonBasicTypeName="tms::MicrogridControllerFeature" sequenceMaxLength="tms::MicrogridControllerFeatureSequence_MAXLEN"/>
+        <const name="MicrogridDashboardFeatureSequence_MINLEN" type="uint32" value="1"/>
+        <const name="MicrogridDashboardFeatureSequence_MAXLEN" type="uint32" value="3"/>
+        <typedef name="MicrogridDashboardFeatureSequence" type="nonBasic" nonBasicTypeName="tms::MicrogridDashboardFeature" sequenceMaxLength="tms::MicrogridDashboardFeatureSequence_MAXLEN"/>
+        <const name="EnumLabelSequence_MINLEN" type="uint32" value="0"/>
+        <const name="EnumLabelSequence_MAXLEN" type="uint32" value="128"/>
+        <typedef name="EnumLabelSequence" type="nonBasic" nonBasicTypeName="tms::String1_32" sequenceMaxLength="tms::EnumLabelSequence_MAXLEN"/>
+        <const name="SourceFeatureSequence_MINLEN" type="uint32" value="0"/>
+        <const name="SourceFeatureSequence_MAXLEN" type="uint32" value="6"/>
+        <typedef name="SourceFeatureSequence" type="nonBasic" nonBasicTypeName="tms::SourceFeature" sequenceMaxLength="tms::SourceFeatureSequence_MAXLEN"/>
+        <const name="StorageFeatureSequence_MINLEN" type="uint32" value="0"/>
+        <const name="StorageFeatureSequence_MAXLEN" type="uint32" value="5"/>
+        <typedef name="StorageFeatureSequence" type="nonBasic" nonBasicTypeName="tms::StorageFeature" sequenceMaxLength="tms::StorageFeatureSequence_MAXLEN"/>
+        <const name="ThermalLoadSequence_MINLEN" type="uint32" value="0"/>
+        <const name="ThermalLoadSequence_MAXLEN" type="uint32" value="5"/>
+        <typedef name="ThermalLoadSequence" type="float32" sequenceMaxLength="tms::ThermalLoadSequence_MAXLEN"/>
+        <const name="ThermalZoneSequence_MINLEN" type="uint32" value="0"/>
+        <const name="ThermalZoneSequence_MAXLEN" type="uint32" value="5"/>
+        <typedef name="ThermalZoneSequence" type="nonBasic" nonBasicTypeName="tms::String1_32" sequenceMaxLength="tms::ThermalZoneSequence_MAXLEN"/>
+        <struct name="Point2D" nested="true">
+          <member name="x" type="float32"/>
+          <member name="y" type="float32"/>
+        </struct>
+        <const name="Point2DSequence_MINLEN" type="uint32" value="0"/>
+        <const name="Point2DSequence_MAXLEN" type="uint32" value="21"/>
+        <typedef name="Point2DSequence" type="nonBasic" nonBasicTypeName="tms::Point2D" sequenceMaxLength="tms::Point2DSequence_MAXLEN"/>
+        <struct name="Curve2D" nested="true">
+          <member name="points" type="nonBasic" nonBasicTypeName="tms::Point2DSequence"/>
+        </struct>
+        <struct name="ControlCurve" nested="true">
+          <member name="minimum" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="nominal" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="maximum" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+        </struct>
+        <struct name="GridRequest" nested="true">
+          <member name="requestingDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+        </struct>
+        <struct name="ClockMonotonic" nested="true">
+          <member name="seconds" type="uint32"/>
+          <member name="nanoseconds" type="uint32"/>
+        </struct>
+        <struct name="ThermalInfo" nested="true">
+          <member name="thermalZone" type="nonBasic" nonBasicTypeName="tms::ThermalZoneSequence"/>
+        </struct>
+        <struct name="ThermalState" nested="true">
+          <member name="thermalLoad" type="nonBasic" nonBasicTypeName="tms::ThermalLoadSequence"/>
+        </struct>
+        <struct name="SynchronousMachineCoefficients" nested="true">
+          <member name="statorResistancePerPhase" type="float32"/>
+          <member name="statorLeakageReactance" type="float32"/>
+          <member name="zeroSequenceReactance" type="float32"/>
+          <member name="negativeSequenceReactance" type="float32"/>
+          <member name="zeroSequenceResistance" type="float32"/>
+          <member name="negativeSequenceResistance" type="float32"/>
+          <member name="directAxisSynchronousReactance" type="float32"/>
+          <member name="directAxisTransientReactance" type="float32"/>
+          <member name="directAxisSubtransientReactance" type="float32"/>
+          <member name="quadratureAxisSynchronousReactance" type="float32"/>
+          <member name="quadratureAxisTransientReactance" type="float32"/>
+          <member name="quadratureAxisSubtransientReactance" type="float32"/>
+          <member name="directAxisTransientShortCircuitTimeConstant" type="float32"/>
+          <member name="directAxisSubtransientShortCircuitTimeConstant" type="float32"/>
+          <member name="directAxisTransientOpenCircuitTimeConstant" type="float32"/>
+          <member name="directAxisSubtransientOpenCircuitTimeConstant" type="float32"/>
+          <member name="quadratureAxisTransientShortCircuitTimeConstant" type="float32"/>
+          <member name="quadratureAxisSubtransientShortCircuitTimeConstant" type="float32"/>
+          <member name="quadratureAxisTransientOpenCircuitTimeConstant" type="float32"/>
+          <member name="quadratureAxisSubtransientOpenCircuitTimeConstant" type="float32"/>
+        </struct>
+        <struct name="PowerElectronicsInfo" nested="true">
+          <member name="minTemperature" type="float32" min="-273" max="10000"/>
+          <member name="maxTemperature" type="float32" min="-273" max="10000"/>
+        </struct>
+        <struct name="PowerElectronicsState" nested="true">
+          <member name="temperature" type="float32" min="-273" max="10000"/>
+        </struct>
+        <typedef name="StorageCellNumber" type="uint16"/>
+        <const name="ONLY_CELL" type="nonBasic" nonBasicTypeName="tms::StorageCellNumber" value="0"/>
+        <const name="MAXLEN_storageCells" type="nonBasic" nonBasicTypeName="tms::StorageCellNumber" value="50"/>
+        <struct name="StorageCellState" nested="true">
+          <member name="cellNumber" type="nonBasic" nonBasicTypeName="tms::StorageCellNumber"/>
+          <member name="cycleCounter" type="float32"/>
+          <member name="stateOfCharge" type="float32" min="0" max="1"/>
+          <member name="temperature" type="float32" min="-273.15" max="10000"/>
+          <member name="voltage" type="float32"/>
+        </struct>
+        <const name="StorageCellStateSequence_MINLEN" type="uint32" value="0"/>
+        <const name="StorageCellStateSequence_MAXLEN" type="uint32" value="tms::MAXLEN_storageCells"/>
+        <typedef name="StorageCellStateSequence" type="nonBasic" nonBasicTypeName="tms::StorageCellState" sequenceMaxLength="tms::StorageCellStateSequence_MAXLEN"/>
+        <struct name="EnergyStorageState" nested="true">
+          <member name="minTemperature" type="float32" min="-273.15" max="10000"/>
+          <member name="averageTemperature" type="float32" min="-273.15" max="10000"/>
+          <member name="maxTemperature" type="float32" min="-273.15" max="10000"/>
+          <member name="runTime" type="float32"/>
+          <member name="storageCells" type="nonBasic" nonBasicTypeName="tms::StorageCellStateSequence"/>
+        </struct>
+        <struct name="EnergyStorageInfo" nested="true">
+          <member name="highStateOfCharge" type="float32" min="0" max="1"/>
+          <member name="lowStateOfCharge" type="float32" min="0" max="1"/>
+          <member name="minTemperature" type="float32" min="-273" max="10000"/>
+          <member name="nomTemperature" type="float32" min="-273" max="10000"/>
+          <member name="maxTemperature" type="float32" min="-273" max="10000"/>
+        </struct>
+        <struct name="GeneratorInfo" nested="true">
+          <member name="minFieldCurrent" type="float32"/>
+          <member name="maxFieldCurrent" type="float32"/>
+          <member name="maxStatorTemperature" type="float32" min="-273" max="10000"/>
+        </struct>
+        <struct name="GeneratorState" nested="true">
+          <member name="fieldCurrent" type="float32"/>
+          <member name="statorTemperature" type="float32"/>
+        </struct>
+        <struct name="EngineInfo" nested="true">
+          <member name="minOilPressure" type="float32" min="0"/>
+          <member name="maxOilPressure" type="float32" min="0"/>
+          <member name="minCoolantTemperature" type="float32"/>
+          <member name="maxCoolantTemperature" type="float32"/>
+          <member name="minEngineSpeed" type="float32" min="0"/>
+          <member name="maxEngineSpeed" type="float32" min="0"/>
+          <member name="minWetStackPreventionLoad" type="float32" min="0"/>
+          <member name="minWetStackMitigationLoad" type="float32" min="0"/>
+        </struct>
+        <enum name="EngineOperatingState">
+          <enumerator name="EOS_UNKNOWN"/>
+          <enumerator name="EOS_STOPPED"/>
+          <enumerator name="EOS_HEATING"/>
+          <enumerator name="EOS_STARTING"/>
+          <enumerator name="EOS_IDLING"/>
+          <enumerator name="EOS_WARMUP"/>
+          <enumerator name="EOS_RUNNING"/>
+          <enumerator name="EOS_COOLDOWN"/>
+          <enumerator name="EOS_STOPPING"/>
+          <enumerator name="EOS_DISABLED"/>
+        </enum>
+        <struct name="EngineState" nested="true">
+          <member name="operatingState" type="nonBasic" nonBasicTypeName="tms::EngineOperatingState"/>
+          <member name="oilPressure" type="float32"/>
+          <member name="coolantTemperature" type="float32" min="-273.15" max="10000"/>
+          <member name="speed" type="float32" min="0"/>
+          <member name="wetStack" type="float32" min="0" max="1" optional="true"/>
+          <member name="engineRuntime" type="float32" min="0"/>
+          <member name="fuelConsumptionRate" type="float32" min="0" optional="true"/>
+        </struct>
+        <struct name="FuelInfo" nested="true">
+          <member name="maxFuelLevel" type="float32" min="0"/>
+          <member name="lowFuelLevelCutoff" type="float32" min="0" max="1"/>
+        </struct>
+        <struct name="FuelState" nested="true">
+          <member name="fuelLevel" type="float32"/>
+          <member name="fuelPumpRunning" type="boolean"/>
+        </struct>
+        <struct name="LoadStepResponse" nested="true">
+          <member name="loadStepLowRealPower" type="float32"/>
+          <member name="loadStepHighRealPower" type="float32"/>
+          <member name="loadStepLowReactivePower" type="float32"/>
+          <member name="loadStepHighReactivePower" type="float32"/>
+          <member name="loadAcceptanceFrequency" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="loadAcceptanceVoltage" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="loadAcceptanceRealPower" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="loadAcceptanceReactivePower" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="loadRejectionFrequency" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="loadRejectionVoltage" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="loadRejectionRealPower" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="loadRejectionReactivePower" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+        </struct>
+        <const name="LoadStepResponseSequence_MINLEN" type="uint32" value="0"/>
+        <const name="LoadStepResponseSequence_MAXLEN" type="uint32" value="16"/>
+        <typedef name="LoadStepResponseSequence" type="nonBasic" nonBasicTypeName="tms::LoadStepResponse" sequenceMaxLength="tms::LoadStepResponseSequence_MAXLEN"/>
+        <struct name="LoadSharingInfo" nested="true">
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+          <member name="supportsDroop" type="boolean"/>
+          <member name="supportsMultiSegmentDroop" type="boolean"/>
+          <member name="supportsConstantPower" type="boolean"/>
+          <member name="minRealPower" type="float32"/>
+          <member name="maxRealPower" type="float32"/>
+          <member name="maxOverloadRealPower" type="nonBasic" nonBasicTypeName="tms::Curve2D" optional="true"/>
+          <member name="minReactivePower" type="float32"/>
+          <member name="maxReactivePower" type="float32"/>
+          <member name="maxApparentPower" type="float32"/>
+          <member name="powerFactor" type="float32"/>
+          <member name="loadResponse" type="nonBasic" nonBasicTypeName="tms::LoadStepResponseSequence" optional="true"/>
+          <member name="supportsIso" type="boolean"/>
+        </struct>
+        <const name="LoadSharingInfoSequence_MINLEN" type="uint32" value="1"/>
+        <const name="LoadSharingInfoSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+        <typedef name="LoadSharingInfoSequence" type="nonBasic" nonBasicTypeName="tms::LoadSharingInfo" sequenceMaxLength="tms::LoadSharingInfoSequence_MAXLEN"/>
+        <struct name="PowerPortId" nested="true">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+        </struct>
+        <typedef name="RequestSequence" type="uint64"/>
+        <struct name="PowerPortConfigRequest" nested="true">
+          <member name="requestingDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="targetDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="config" type="nonBasic" nonBasicTypeName="tms::ConfigId"/>
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+        </struct>
+        <enum name="GridSupportMode">
+          <enumerator name="GSM_UNKNOWN"/>
+          <enumerator name="GSM_STANDALONE"/>
+          <enumerator name="GSM_PARALLEL"/>
+          <enumerator name="GSM_AUTOMATIC"/>
+        </enum>
+        <struct name="GridSupportRequest">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::PowerPortConfigRequest" key="true"/>
+          <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="desiredGridSupportMode" type="nonBasic" nonBasicTypeName="tms::GridSupportMode"/>
+        </struct>
+        <struct name="GridSupportState">
+          <member name="portId" type="nonBasic" nonBasicTypeName="tms::PowerPortId" key="true"/>
+          <member name="config" type="nonBasic" nonBasicTypeName="tms::ConfigId"/>
+          <member name="presentGridSupportMode" type="nonBasic" nonBasicTypeName="tms::GridSupportMode"/>
+          <member name="requestedGridSupportMode" type="nonBasic" nonBasicTypeName="tms::GridSupportMode"/>
+        </struct>
+        <struct name="StorageState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="presentMaxChargeEnergy" type="float32"/>
+        </struct>
+        <const name="GridSupportModeSequence_MINLEN" type="uint32" value="1"/>
+        <const name="GridSupportModeSequence_MAXLEN" type="uint32" value="4"/>
+        <typedef name="GridSupportModeSequence" type="nonBasic" nonBasicTypeName="tms::GridSupportMode" sequenceMaxLength="tms::GridSupportModeSequence_MAXLEN"/>
+        <struct name="GridSupportInfo" nested="true">
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+          <member name="gridSupportModes" type="nonBasic" nonBasicTypeName="tms::GridSupportModeSequence"/>
+        </struct>
+        <const name="GridSupportInfoSequence_MINLEN" type="uint32" value="1"/>
+        <const name="GridSupportInfoSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+        <typedef name="GridSupportInfoSequence" type="nonBasic" nonBasicTypeName="tms::GridSupportInfo" sequenceMaxLength="tms::GridSupportInfoSequence_MAXLEN"/>
+        <struct name="StorageInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::StorageFeatureSequence"/>
+          <member name="maxChargeEnergy" type="float32"/>
+          <member name="loadSharing" type="nonBasic" nonBasicTypeName="tms::LoadSharingInfo"/>
+          <member name="supportedEnergyStartStopLevels" type="nonBasic" nonBasicTypeName="tms::EnergyStartStopLevelSequence"/>
+          <member name="gridSupport" type="nonBasic" nonBasicTypeName="tms::GridSupportInfo"/>
+        </struct>
+        <struct name="ControlHardwareInfo" nested="true">
+          <member name="hasRealtimeClock" type="boolean"/>
+          <member name="minTemperature" type="float32" min="-273" max="10000"/>
+          <member name="maxTemperature" type="float32" min="-273" max="10000"/>
+          <member name="numNetworkPorts" type="uint16" min="0"/>
+        </struct>
+        <struct name="ControlHardwareUpdate">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="timestamp" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic"/>
+          <member name="processorUsage" type="float32" min="0" max="1"/>
+          <member name="memoryUsage" type="float32" min="0" max="1"/>
+          <member name="networkUsage" type="float32" min="0" max="1"/>
+          <member name="storageUsage" type="float32" min="0" max="1"/>
+          <member name="temperature" type="float32" min="-273" max="10000"/>
+        </struct>
+        <struct name="PowerHardwareInfo" nested="true">
+          <member name="engine" type="nonBasic" nonBasicTypeName="tms::EngineInfo" optional="true"/>
+          <member name="fuel" type="nonBasic" nonBasicTypeName="tms::FuelInfo" optional="true"/>
+          <member name="generator" type="nonBasic" nonBasicTypeName="tms::GeneratorInfo" optional="true"/>
+          <member name="energyStorage" type="nonBasic" nonBasicTypeName="tms::EnergyStorageInfo" optional="true"/>
+          <member name="powerElectronics" type="nonBasic" nonBasicTypeName="tms::PowerElectronicsInfo" optional="true"/>
+          <member name="thermal" type="nonBasic" nonBasicTypeName="tms::ThermalInfo" optional="true"/>
+          <member name="synchronousMachineModel" type="nonBasic" nonBasicTypeName="tms::SynchronousMachineCoefficients" optional="true"/>
+        </struct>
+        <struct name="PowerHardwareUpdate">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="timestamp" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic"/>
+          <member name="engine" type="nonBasic" nonBasicTypeName="tms::EngineState" optional="true"/>
+          <member name="fuel" type="nonBasic" nonBasicTypeName="tms::FuelState" optional="true"/>
+          <member name="generator" type="nonBasic" nonBasicTypeName="tms::GeneratorState" optional="true"/>
+          <member name="energyStorage" type="nonBasic" nonBasicTypeName="tms::EnergyStorageState" optional="true"/>
+          <member name="powerElectronics" type="nonBasic" nonBasicTypeName="tms::PowerElectronicsState" optional="true"/>
+          <member name="thermal" type="nonBasic" nonBasicTypeName="tms::ThermalState" optional="true"/>
+        </struct>
+        <struct name="DiagnosticTroubleCode" nested="true">
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber" optional="true"/>
+          <member name="suspectParameter" type="nonBasic" nonBasicTypeName="tms::SuspectParameterNumber"/>
+          <member name="failureMode" type="nonBasic" nonBasicTypeName="tms::FailureModeIndicator"/>
+          <member name="occurrenceCount" type="uint32"/>
+          <member name="timeRaised" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic"/>
+          <member name="severity" type="nonBasic" nonBasicTypeName="tms::DtcSeverity"/>
+          <member name="estimateTime" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic" optional="true"/>
+          <member name="estimateSeverity" type="nonBasic" nonBasicTypeName="tms::DtcSeverity" optional="true"/>
+          <member name="hint" type="nonBasic" nonBasicTypeName="tms::String32"/>
+        </struct>
+        <const name="DiagnosticTroubleCodeSequence_MINLEN" type="uint32" value="0"/>
+        <const name="DiagnosticTroubleCodeSequence_MAXLEN" type="uint32" value="64"/>
+        <typedef name="DiagnosticTroubleCodeSequence" type="nonBasic" nonBasicTypeName="tms::DiagnosticTroubleCode" sequenceMaxLength="tms::DiagnosticTroubleCodeSequence_MAXLEN"/>
+        <struct name="ClockRealtime" nested="true">
+          <member name="epoch" type="uint16"/>
+          <member name="seconds" type="uint32"/>
+          <member name="nanoseconds" type="uint32"/>
+        </struct>
+        <enum name="ClockSource">
+          <enumerator name="CLOCK_UNKNOWN"/>
+          <enumerator name="CLOCK_ATOMIC"/>
+          <enumerator name="CLOCK_GPS"/>
+          <enumerator name="CLOCK_RADIO"/>
+          <enumerator name="CLOCK_PTP"/>
+          <enumerator name="CLOCK_NTP"/>
+          <enumerator name="CLOCK_HAND"/>
+          <enumerator name="CLOCK_OTHER"/>
+          <enumerator name="CLOCK_INTERNAL"/>
+        </enum>
+        <struct name="ClockState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="monotonic" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic"/>
+          <member name="monotonicPersistence" type="nonBasic" nonBasicTypeName="tms::ClockMonotonicPersistenceType"/>
+          <member name="realtime" type="nonBasic" nonBasicTypeName="tms::ClockRealtime"/>
+          <member name="realtimeSource" type="nonBasic" nonBasicTypeName="tms::ClockSource"/>
+          <member name="realtimeSetTime" type="nonBasic" nonBasicTypeName="tms::ClockRealtime"/>
+        </struct>
+        <struct name="DeviceConfigRequest" nested="true">
+          <member name="requestingDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="targetDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="config" type="nonBasic" nonBasicTypeName="tms::ConfigId"/>
+        </struct>
+        <struct name="DeviceRequest" nested="true">
+          <member name="requestingDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="targetDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+        </struct>
+        <struct name="PowerConnectorInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::PowerConnectorFeatureSequence"/>
+          <member name="physicalType" type="nonBasic" nonBasicTypeName="tms::PowerConnectorType"/>
+          <member name="polarity" type="nonBasic" nonBasicTypeName="tms::PowerConnectorPolarity"/>
+        </struct>
+        <struct name="PowerSwitchInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::PowerSwitchFeatureSequence"/>
+          <member name="interruptAmperage" type="float32"/>
+        </struct>
+        <struct name="PowerPortInfo" nested="true">
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+          <member name="wiring" type="nonBasic" nonBasicTypeName="tms::CircuitWiring"/>
+          <member name="directionality" type="nonBasic" nonBasicTypeName="tms::PowerPortDirectionality"/>
+          <member name="hasSwitch" type="boolean"/>
+          <member name="hasExternalMeter" type="boolean"/>
+          <member name="hasInternalMeter" type="boolean"/>
+          <member name="hasSummaryMeasurementUpdate" type="boolean"/>
+          <member name="minAmperage" type="float32"/>
+          <member name="maxAmperage" type="float32"/>
+          <member name="shortCircuitAmperage" type="float32"/>
+          <member name="minVoltage" type="float32"/>
+          <member name="maxVoltage" type="float32"/>
+          <member name="minFrequency" type="float32" optional="true"/>
+          <member name="maxFrequency" type="float32" optional="true"/>
+          <member name="connectorInfo" type="nonBasic" nonBasicTypeName="tms::PowerConnectorInfo"/>
+          <member name="switchInfo" type="nonBasic" nonBasicTypeName="tms::PowerSwitchInfo" optional="true"/>
+        </struct>
+        <const name="PowerPortInfoSequence_MINLEN" type="uint32" value="0"/>
+        <const name="PowerPortInfoSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+        <typedef name="PowerPortInfoSequence" type="nonBasic" nonBasicTypeName="tms::PowerPortInfo" sequenceMaxLength="tms::PowerPortInfoSequence_MAXLEN"/>
+        <enum name="PowerSwitchTransitionCode">
+          <enumerator name="PSTC_UNKNOWN"/>
+          <enumerator name="PSTC_NONE"/>
+          <enumerator name="PSTC_IN_PROGRESS"/>
+          <enumerator name="PSTC_PENDING_SYNC"/>
+          <enumerator name="PSTC_PENDING_SWITCH_CONDITIONS"/>
+          <enumerator name="PSTC_PENDING_INTERLOCK"/>
+          <enumerator name="PSTC_COMPLETE"/>
+          <enumerator name="PSTC_MANUAL_OVERRIDE"/>
+          <enumerator name="PSTC_AUTO_OVERRIDE"/>
+          <enumerator name="PSTC_AUTO_LOCK"/>
+          <enumerator name="PSTC_MALFUNCTION"/>
+        </enum>
+        <struct name="PowerSwitchStatus" nested="true">
+          <member name="presentContinuity" type="nonBasic" nonBasicTypeName="tms::CircuitContinuity"/>
+          <member name="futureContinuity" type="nonBasic" nonBasicTypeName="tms::CircuitContinuity"/>
+          <member name="requestLock" type="boolean"/>
+          <member name="presentContinuityReason" type="nonBasic" nonBasicTypeName="tms::PowerSwitchReason"/>
+          <member name="presentContinuityActor" type="nonBasic" nonBasicTypeName="tms::Identity" optional="true"/>
+          <member name="futureContinuityReason" type="nonBasic" nonBasicTypeName="tms::PowerSwitchTransitionCode"/>
+        </struct>
+        <struct name="GroundingCircuitStatus" nested="true">
+          <member name="groundNumber" type="nonBasic" nonBasicTypeName="tms::GroundingCircuitNumber"/>
+          <member name="control" type="nonBasic" nonBasicTypeName="tms::PowerSwitchStatus" optional="true"/>
+          <member name="pulse" type="nonBasic" nonBasicTypeName="tms::PowerSwitchStatus" optional="true"/>
+          <member name="faultDetection" type="nonBasic" nonBasicTypeName="tms::GroundFaultDetection"/>
+        </struct>
+        <const name="GroundingCircuitStateSequence_MINLEN" type="uint32" value="0"/>
+        <const name="GroundingCircuitStateSequence_MAXLEN" type="uint32" value="tms::MAX_GROUNDING_CIRCUITS"/>
+        <typedef name="GroundingCircuitStateSequence" type="nonBasic" nonBasicTypeName="tms::GroundingCircuitStatus" sequenceMaxLength="tms::GroundingCircuitStateSequence_MAXLEN"/>
+        <struct name="GroundingCircuitState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="grounds" type="nonBasic" nonBasicTypeName="tms::GroundingCircuitStateSequence"/>
+        </struct>
+        <struct name="GroundingInfo" nested="true">
+          <member name="groundNumber" type="nonBasic" nonBasicTypeName="tms::GroundingCircuitNumber"/>
+          <member name="groundType" type="nonBasic" nonBasicTypeName="tms::GroundingDesignType"/>
+          <member name="protectedPorts" type="nonBasic" nonBasicTypeName="tms::PowerPortNumberSequence"/>
+          <member name="controlSwitchFeatures" type="nonBasic" nonBasicTypeName="tms::PowerSwitchFeatureSequence"/>
+          <member name="pulseSwitchFeatures" type="nonBasic" nonBasicTypeName="tms::PowerSwitchFeatureSequence"/>
+        </struct>
+        <const name="GroundingInfoSequence_MINLEN" type="uint32" value="0"/>
+        <const name="GroundingInfoSequence_MAXLEN" type="uint32" value="tms::MAX_GROUNDING_CIRCUITS"/>
+        <typedef name="GroundingInfoSequence" type="nonBasic" nonBasicTypeName="tms::GroundingInfo" sequenceMaxLength="tms::GroundingInfoSequence_MAXLEN"/>
+        <const name="MAX_PARAMETERS" type="uint32" value="128"/>
+        <struct name="ParameterMetadata" nested="true">
+          <member name="name" type="nonBasic" nonBasicTypeName="tms::String1_32"/>
+          <member name="units" type="nonBasic" nonBasicTypeName="tms::String16"/>
+          <member name="nominalMinValue" type="float32"/>
+          <member name="nominalMaxValue" type="float32"/>
+          <member name="hardMinValue" type="float32"/>
+          <member name="hardMaxValue" type="float32"/>
+          <member name="resolution" type="float32" min="0"/>
+          <member name="enumLabels" type="nonBasic" nonBasicTypeName="tms::EnumLabelSequence"/>
+        </struct>
+        <struct name="ParameterValue" nested="true">
+          <member name="name" type="nonBasic" nonBasicTypeName="tms::String1_32"/>
+          <member name="value" type="float32"/>
+        </struct>
+        <const name="ParameterValueSequence_MINLEN" type="uint32" value="0"/>
+        <const name="ParameterValueSequence_MAXLEN" type="uint32" value="128"/>
+        <typedef name="ParameterValueSequence" type="nonBasic" nonBasicTypeName="tms::ParameterValue" sequenceMaxLength="tms::ParameterValueSequence_MAXLEN"/>
+        <const name="ParameterMetadataSequence_MINLEN" type="uint32" value="0"/>
+        <const name="ParameterMetadataSequence_MAXLEN" type="uint32" value="128"/>
+        <typedef name="ParameterMetadataSequence" type="nonBasic" nonBasicTypeName="tms::ParameterMetadata" sequenceMaxLength="tms::ParameterMetadataSequence_MAXLEN"/>
+        <struct name="PowerPortStatus" nested="true">
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+          <member name="cableStatus" type="nonBasic" nonBasicTypeName="tms::CableSenseStatus"/>
+          <member name="cableId" type="nonBasic" nonBasicTypeName="tms::Identity" optional="true"/>
+          <member name="connection" type="nonBasic" nonBasicTypeName="tms::PowerPortId" optional="true"/>
+          <member name="switchStatus" type="nonBasic" nonBasicTypeName="tms::PowerSwitchStatus" optional="true"/>
+        </struct>
+        <const name="PowerPortStatusSequence_MINLEN" type="uint32" value="0"/>
+        <const name="PowerPortStatusSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+        <typedef name="PowerPortStatusSequence" type="nonBasic" nonBasicTypeName="tms::PowerPortStatus" sequenceMaxLength="tms::PowerPortStatusSequence_MAXLEN"/>
+        <struct name="OperatorPriority" nested="true">
+          <member name="priorityType" type="nonBasic" nonBasicTypeName="tms::OperatorPriorityType"/>
+          <member name="numericRank" type="int16"/>
+        </struct>
+        <struct name="PowerPortIntent" nested="true">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+          <member name="priority" type="nonBasic" nonBasicTypeName="tms::OperatorPriority"/>
+        </struct>
+        <struct name="PowerConnectionId" nested="true">
+          <member name="portA" type="nonBasic" nonBasicTypeName="tms::PowerPortId"/>
+          <member name="portB" type="nonBasic" nonBasicTypeName="tms::PowerPortId" optional="true"/>
+        </struct>
+        <struct name="SourceInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::SourceFeatureSequence"/>
+          <member name="loadSharing" type="nonBasic" nonBasicTypeName="tms::LoadSharingInfo"/>
+          <member name="supportedEnergyStartStopLevels" type="nonBasic" nonBasicTypeName="tms::EnergyStartStopLevelSequence"/>
+        </struct>
+        <struct name="ActiveDiagnosticState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="codes" type="nonBasic" nonBasicTypeName="tms::DiagnosticTroubleCodeSequence"/>
+          <member name="overflow" type="uint32"/>
+        </struct>
+        <struct name="AuthorizationToEnergizeResult">
+          <member name="relatedRequestId" type="nonBasic" nonBasicTypeName="tms::GridRequest" key="true"/>
+          <member name="relatedSequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="authorizationDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity" optional="true"/>
+          <member name="energizeRequestingDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="energizeSequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="userId" type="nonBasic" nonBasicTypeName="tms::Identity" optional="true"/>
+          <member name="accepted" type="boolean"/>
+          <member name="responseReceived" type="boolean"/>
+          <member name="energizeRequestValid" type="boolean"/>
+          <member name="authorizationReviewValid" type="boolean"/>
+          <member name="outcomeMonotonic" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic"/>
+          <member name="outcomeRealtime" type="nonBasic" nonBasicTypeName="tms::ClockRealtime"/>
+        </struct>
+        <struct name="AuthorizationToEnergizeRequest">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::GridRequest" key="true"/>
+          <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="energizeRequestingDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="energizeSequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="powerPorts" type="nonBasic" nonBasicTypeName="tms::PowerPortNumberSequence"/>
+        </struct>
+        <struct name="AuthorizationToEnergizeReply">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="relatedRequestId" type="nonBasic" nonBasicTypeName="tms::GridRequest" key="true"/>
+          <member name="relatedSequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="energizeRequestingDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="energizeSequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="powerPorts" type="nonBasic" nonBasicTypeName="tms::PowerPortNumberSequence"/>
+          <member name="userId" type="nonBasic" nonBasicTypeName="tms::Identity" optional="true"/>
+          <member name="accept" type="boolean"/>
+          <member name="deny" type="boolean"/>
+          <member name="timeOfReview" type="nonBasic" nonBasicTypeName="tms::ClockRealtime"/>
+        </struct>
+        <struct name="IdentityNicknameRequest">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::DeviceRequest" key="true"/>
+          <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="nickname" type="nonBasic" nonBasicTypeName="tms::String32"/>
+        </struct>
+        <struct name="DeviceIcon">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="mimeType" type="nonBasic" nonBasicTypeName="tms::String32"/>
+          <member name="data" type="nonBasic" nonBasicTypeName="tms::OctetSequence"/>
+        </struct>
+        <struct name="DeviceIntent" nested="true">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="battleShort" type="boolean"/>
+          <member name="priority" type="nonBasic" nonBasicTypeName="tms::OperatorPriority"/>
+        </struct>
+        <const name="DeviceIntentSequence_MINLEN" type="uint32" value="0"/>
+        <const name="DeviceIntentSequence_MAXLEN" type="uint32" value="200"/>
+        <typedef name="DeviceIntentSequence" type="nonBasic" nonBasicTypeName="tms::DeviceIntent" sequenceMaxLength="tms::DeviceIntentSequence_MAXLEN"/>
+        <struct name="ControlParameterRequest">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::DeviceConfigRequest" key="true"/>
+          <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="parameters" type="nonBasic" nonBasicTypeName="tms::ParameterValueSequence"/>
+        </struct>
+        <struct name="ControlParameterState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="config" type="nonBasic" nonBasicTypeName="tms::ConfigId"/>
+          <member name="parameters" type="nonBasic" nonBasicTypeName="tms::ParameterValueSequence"/>
+        </struct>
+        <struct name="PowerPortState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="powerPorts" type="nonBasic" nonBasicTypeName="tms::PowerPortStatusSequence"/>
+        </struct>
+        <struct name="DistributionInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::DistributionFeatureSequence"/>
+        </struct>
+        <struct name="IdentityNicknameState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="identityId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="nickname" type="nonBasic" nonBasicTypeName="tms::String32"/>
+        </struct>
+        <struct name="GroundingCircuitRequest">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::DeviceConfigRequest" key="true"/>
+          <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="groundNumber" type="nonBasic" nonBasicTypeName="tms::GroundingCircuitNumber"/>
+          <member name="control" type="nonBasic" nonBasicTypeName="tms::DesiredCircuitContinuity"/>
+          <member name="pulse" type="nonBasic" nonBasicTypeName="tms::DesiredCircuitContinuity"/>
+        </struct>
+        <struct name="Heartbeat">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="sequenceNumber" type="uint32"/>
+        </struct>
+        <struct name="LoadInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::LoadFeatureSequence"/>
+          <member name="maxRealPower" type="float32"/>
+          <member name="maxReactivePower" type="float32"/>
+        </struct>
+        <struct name="MetricParameterState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="metricParameters" type="nonBasic" nonBasicTypeName="tms::ParameterValueSequence"/>
+        </struct>
+        <struct name="LoadSharingIntent" nested="true">
+          <member name="increaseCapacityThreshold" type="float32" min="0" max="1"/>
+          <member name="decreaseCapacityThreshold" type="float32" min="0" max="1"/>
+          <member name="decreaseCapacityDuration" type="float32"/>
+          <member name="priorityLoadCurtailmentAllowed" type="nonBasic" nonBasicTypeName="tms::OperatorPriority"/>
+          <member name="priorityPowerPortSheddingAllowed" type="nonBasic" nonBasicTypeName="tms::OperatorPriority"/>
+        </struct>
+        <struct name="StorageIntent" nested="true">
+          <member name="reservedStateOfCharge" type="float32" min="0" max="1"/>
+          <member name="timeTillReservedSoc" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic"/>
+          <member name="priorityLoadSheddingAllowed" type="nonBasic" nonBasicTypeName="tms::OperatorPriority"/>
+          <member name="priorityPowerPortSheddingAllowed" type="nonBasic" nonBasicTypeName="tms::OperatorPriority"/>
+          <member name="reservedDeviceIds" type="nonBasic" nonBasicTypeName="tms::IdentitySequence"/>
+        </struct>
+        <struct name="MicrogridIntent" nested="true">
+          <member name="operatingModeValue" type="nonBasic" nonBasicTypeName="tms::OperatingMode"/>
+          <member name="loadSharingIntentValue" type="nonBasic" nonBasicTypeName="tms::LoadSharingIntent"/>
+          <member name="storageIntentValue" type="nonBasic" nonBasicTypeName="tms::StorageIntent" optional="true"/>
+        </struct>
+        <const name="PowerPortIntentSequence_MINLEN" type="uint32" value="0"/>
+        <const name="PowerPortIntentSequence_MAXLEN" type="uint32" value="4000"/>
+        <typedef name="PowerPortIntentSequence" type="nonBasic" nonBasicTypeName="tms::PowerPortIntent" sequenceMaxLength="tms::PowerPortIntentSequence_MAXLEN"/>
+        <struct name="OperatorIntent" nested="true">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::GridRequest"/>
+          <member name="intentType" type="nonBasic" nonBasicTypeName="tms::OperatorIntentType"/>
+          <member name="microgrid" type="nonBasic" nonBasicTypeName="tms::MicrogridIntent"/>
+          <member name="devices" type="nonBasic" nonBasicTypeName="tms::DeviceIntentSequence"/>
+          <member name="powerPorts" type="nonBasic" nonBasicTypeName="tms::PowerPortIntentSequence"/>
+        </struct>
+        <struct name="OperatorIntentRequest">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::GridRequest" key="true"/>
+          <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="desiredOperatorIntent" type="nonBasic" nonBasicTypeName="tms::OperatorIntent"/>
+        </struct>
+        <struct name="OperatorIntentState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="activeOperatorIntent" type="nonBasic" nonBasicTypeName="tms::OperatorIntent"/>
+        </struct>
+        <struct name="PowerConnection" nested="true">
+          <member name="connectionId" type="nonBasic" nonBasicTypeName="tms::PowerConnectionId"/>
+          <member name="detectionType" type="nonBasic" nonBasicTypeName="tms::PowerConnectionDetectionType"/>
+          <member name="detectionSource" type="nonBasic" nonBasicTypeName="tms::Identity"/>
+          <member name="detectionConfidence" type="float32" min="-1" max="1"/>
+        </struct>
+        <const name="PowerConnectionSequence_MINLEN" type="uint32" value="0"/>
+        <const name="PowerConnectionSequence_MAXLEN" type="uint32" value="200"/>
+        <typedef name="PowerConnectionSequence" type="nonBasic" nonBasicTypeName="tms::PowerConnection" sequenceMaxLength="tms::PowerConnectionSequence_MAXLEN"/>
+        <struct name="PowerConnectionState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="connections" type="nonBasic" nonBasicTypeName="tms::PowerConnectionSequence"/>
+        </struct>
+        <struct name="PowerSwitchCloseConditions" nested="true">
+          <member name="minVoltage" type="float32"/>
+          <member name="maxVoltage" type="float32"/>
+          <member name="minFrequency" type="float32"/>
+          <member name="maxFrequency" type="float32"/>
+        </struct>
+        <struct name="PowerSwitchRequest">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::PowerPortConfigRequest" key="true"/>
+          <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="continuity" type="nonBasic" nonBasicTypeName="tms::DesiredCircuitContinuity"/>
+          <member name="switchConditions" type="nonBasic" nonBasicTypeName="tms::PowerSwitchCloseConditions" optional="true"/>
+        </struct>
+        <struct name="TopicInfo" nested="true">
+          <member name="dataModelVersion" type="nonBasic" nonBasicTypeName="tms::String32"/>
+          <member name="publishedConditionalTopics" type="nonBasic" nonBasicTypeName="tms::TopicList"/>
+          <member name="publishedOptionalTopics" type="nonBasic" nonBasicTypeName="tms::TopicList"/>
+          <member name="supportedRequestTopics" type="nonBasic" nonBasicTypeName="tms::TopicList"/>
+          <member name="extensionTopics" type="nonBasic" nonBasicTypeName="tms::TopicList" optional="true"/>
+        </struct>
+        <struct name="ActiveConversionInfo" nested="true">
+          <member name="loadSharing" type="nonBasic" nonBasicTypeName="tms::LoadSharingInfoSequence"/>
+          <member name="gridSupport" type="nonBasic" nonBasicTypeName="tms::GridSupportInfoSequence"/>
+        </struct>
+        <struct name="ConversionTapInfo" nested="true">
+          <member name="tapId" type="nonBasic" nonBasicTypeName="tms::TapNumber"/>
+          <member name="phaseShift" type="float32"/>
+          <member name="voltageRatio" type="float32"/>
+        </struct>
+        <const name="ConversionTapInfoSequence_MINLEN" type="uint32" value="1"/>
+        <const name="ConversionTapInfoSequence_MAXLEN" type="uint32" value="tms::MAX_TAPS"/>
+        <typedef name="ConversionTapInfoSequence" type="nonBasic" nonBasicTypeName="tms::ConversionTapInfo" sequenceMaxLength="tms::ConversionTapInfoSequence_MAXLEN"/>
+        <struct name="PowerPortConversionInfo" nested="true">
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+          <member name="conversionTaps" type="nonBasic" nonBasicTypeName="tms::ConversionTapInfoSequence"/>
+          <member name="changeUnderLoad" type="boolean"/>
+        </struct>
+        <const name="PowerPortConversionInfoSequence_MINLEN" type="uint32" value="1"/>
+        <const name="PowerPortConversionInfoSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+        <typedef name="PowerPortConversionInfoSequence" type="nonBasic" nonBasicTypeName="tms::PowerPortConversionInfo" sequenceMaxLength="tms::PowerPortConversionInfoSequence_MAXLEN"/>
+        <struct name="PassiveConversionInfo" nested="true">
+          <member name="portConversion" type="nonBasic" nonBasicTypeName="tms::PowerPortConversionInfoSequence"/>
+        </struct>
+        <struct name="ConversionInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::ConversionFeatureSequence"/>
+          <member name="activeConversion" type="nonBasic" nonBasicTypeName="tms::ActiveConversionInfo" optional="true"/>
+          <member name="passiveConversion" type="nonBasic" nonBasicTypeName="tms::PassiveConversionInfo" optional="true"/>
+        </struct>
+        <struct name="ProductInfo" nested="true">
+          <member name="nsn" type="nonBasic" nonBasicTypeName="tms::NatoStockNumber"/>
+          <member name="gtin" type="nonBasic" nonBasicTypeName="tms::GlobalTradeItemNumber"/>
+          <member name="manufacturerName" type="nonBasic" nonBasicTypeName="tms::String32"/>
+          <member name="modelName" type="nonBasic" nonBasicTypeName="tms::String32"/>
+          <member name="modelNumber" type="nonBasic" nonBasicTypeName="tms::String32"/>
+          <member name="serialNumber" type="nonBasic" nonBasicTypeName="tms::String32"/>
+          <member name="softwareVersion" type="nonBasic" nonBasicTypeName="tms::String32"/>
+          <member name="platformId" type="nonBasic" nonBasicTypeName="tms::Identity" optional="true"/>
+        </struct>
+        <struct name="MicrogridDashboardInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::MicrogridDashboardFeatureSequence"/>
+        </struct>
+        <struct name="MicrogridControllerInfo" nested="true">
+          <member name="features" type="nonBasic" nonBasicTypeName="tms::MicrogridControllerFeatureSequence"/>
+        </struct>
+        <struct name="ReplyStatus" nested="true">
+          <member name="code" type="nonBasic" nonBasicTypeName="tms::ReplyCode"/>
+          <member name="reason" type="nonBasic" nonBasicTypeName="tms::String32"/>
+        </struct>
+        <struct name="Reply">
+          <member name="requestingDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="targetDeviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="config" type="nonBasic" nonBasicTypeName="tms::ConfigId"/>
+          <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+          <member name="requestSequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="status" type="nonBasic" nonBasicTypeName="tms::ReplyStatus"/>
+        </struct>
+        <struct name="EnergyStartStopRequest">
+          <member name="requestId" type="nonBasic" nonBasicTypeName="tms::DeviceConfigRequest" key="true"/>
+          <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+          <member name="fromLevel" type="nonBasic" nonBasicTypeName="tms::EnergyStartStopLevel"/>
+          <member name="toLevel" type="nonBasic" nonBasicTypeName="tms::EnergyStartStopLevel"/>
+          <member name="switchConditions" type="nonBasic" nonBasicTypeName="tms::PowerSwitchCloseConditions" optional="true"/>
+        </struct>
+        <struct name="EnergyStartStopState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="presentLevel" type="nonBasic" nonBasicTypeName="tms::EnergyStartStopLevel"/>
+          <member name="futureLevel" type="nonBasic" nonBasicTypeName="tms::EnergyStartStopLevel"/>
+          <member name="requestLock" type="boolean"/>
+          <member name="elapsedTime" type="float32"/>
+          <member name="remainingTime" type="float32"/>
+          <member name="presentLevelReason" type="nonBasic" nonBasicTypeName="tms::PowerSwitchReason"/>
+          <member name="presentLevelActor" type="nonBasic" nonBasicTypeName="tms::Identity" optional="true"/>
+          <member name="futureLevelReason" type="nonBasic" nonBasicTypeName="tms::PowerSwitchTransitionCode"/>
+        </struct>
+        <struct name="ActiveMicrogridControllerState">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="masterId" type="nonBasic" nonBasicTypeName="tms::Identity" optional="true"/>
+        </struct>
+        <module name="ac">
+          <const name="PhaseAngleSequence_MINLEN" type="uint32" value="0"/>
+          <const name="PhaseAngleSequence_MAXLEN" type="uint32" value="3"/>
+          <typedef name="PhaseAngleSequence" type="float32" sequenceMaxLength="tms::ac::PhaseAngleSequence_MAXLEN"/>
+          <struct name="PowerLineMeasurement" nested="true">
+            <member name="voltage" type="float32"/>
+            <member name="frequency" type="float32" min="0"/>
+            <member name="amperage" type="float32"/>
+            <member name="phaseOffset" type="float32" min="-3.1416" max="3.1416"/>
+            <member name="realPower" type="float32"/>
+            <member name="reactivePower" type="float32"/>
+          </struct>
+          <const name="PowerLineMeasurementSequence_MINLEN" type="uint32" value="1"/>
+          <const name="PowerLineMeasurementSequence_MAXLEN" type="uint32" value="4"/>
+          <typedef name="PowerLineMeasurementSequence" type="nonBasic" nonBasicTypeName="tms::ac::PowerLineMeasurement" sequenceMaxLength="tms::ac::PowerLineMeasurementSequence_MAXLEN"/>
+          <struct name="PowerPortMeasurement" nested="true">
+            <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+            <member name="line" type="nonBasic" nonBasicTypeName="tms::ac::PowerLineMeasurementSequence"/>
+            <member name="phaseAngle" type="nonBasic" nonBasicTypeName="tms::ac::PhaseAngleSequence"/>
+            <member name="realPowerRateOfChange" type="float32"/>
+            <member name="reactivePowerRateOfChange" type="float32"/>
+          </struct>
+          <const name="PowerPortMeasurementSequence_MINLEN" type="uint32" value="0"/>
+          <const name="PowerPortMeasurementSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+          <typedef name="PowerPortMeasurementSequence" type="nonBasic" nonBasicTypeName="tms::ac::PowerPortMeasurement" sequenceMaxLength="tms::ac::PowerPortMeasurementSequence_MAXLEN"/>
+          <struct name="MeasurementUpdate">
+            <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+            <member name="timeMeasured" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic"/>
+            <member name="externalMeasurement" type="nonBasic" nonBasicTypeName="tms::ac::PowerPortMeasurementSequence"/>
+            <member name="internalMeasurement" type="nonBasic" nonBasicTypeName="tms::ac::PowerPortMeasurementSequence"/>
+          </struct>
+          <struct name="LoadSharingParameters" nested="true">
+            <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+            <member name="referenceFrequency" type="nonBasic" nonBasicTypeName="tms::ControlCurve"/>
+            <member name="referenceVoltage" type="nonBasic" nonBasicTypeName="tms::ControlCurve"/>
+            <member name="minRealPower" type="float32"/>
+            <member name="maxRealPower" type="float32"/>
+            <member name="minFrequency" type="float32"/>
+            <member name="maxFrequency" type="float32"/>
+            <member name="minReactivePower" type="float32"/>
+            <member name="maxReactivePower" type="float32"/>
+            <member name="minVoltage" type="float32"/>
+            <member name="maxVoltage" type="float32"/>
+          </struct>
+          <const name="LoadSharingParameterSequence_MINLEN" type="uint32" value="1"/>
+          <const name="LoadSharingParameterSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+          <typedef name="LoadSharingParameterSequence" type="nonBasic" nonBasicTypeName="tms::ac::LoadSharingParameters" sequenceMaxLength="tms::ac::LoadSharingParameterSequence_MAXLEN"/>
+          <struct name="LoadSharingRequest">
+            <member name="requestId" type="nonBasic" nonBasicTypeName="tms::PowerPortConfigRequest" key="true"/>
+            <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+            <member name="parameters" type="nonBasic" nonBasicTypeName="tms::ac::LoadSharingParameters"/>
+          </struct>
+          <struct name="LoadSharingState">
+            <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+            <member name="config" type="nonBasic" nonBasicTypeName="tms::ConfigId"/>
+            <member name="parameters" type="nonBasic" nonBasicTypeName="tms::ac::LoadSharingParameterSequence"/>
+          </struct>
+        </module>
+        <module name="dc">
+          <struct name="PowerLineMeasurement" nested="true">
+            <member name="voltage" type="float32"/>
+            <member name="amperage" type="float32"/>
+            <member name="power" type="float32"/>
+          </struct>
+          <const name="PowerLineMeasurementSequence_MINLEN" type="uint32" value="1"/>
+          <const name="PowerLineMeasurementSequence_MAXLEN" type="uint32" value="3"/>
+          <typedef name="PowerLineMeasurementSequence" type="nonBasic" nonBasicTypeName="tms::dc::PowerLineMeasurement" sequenceMaxLength="tms::dc::PowerLineMeasurementSequence_MAXLEN"/>
+          <struct name="PowerPortMeasurement" nested="true">
+            <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+            <member name="line" type="nonBasic" nonBasicTypeName="tms::dc::PowerLineMeasurementSequence"/>
+            <member name="powerRateOfChange" type="float32"/>
+          </struct>
+          <const name="PowerPortMeasurementSequence_MINLEN" type="uint32" value="0"/>
+          <const name="PowerPortMeasurementSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+          <typedef name="PowerPortMeasurementSequence" type="nonBasic" nonBasicTypeName="tms::dc::PowerPortMeasurement" sequenceMaxLength="tms::dc::PowerPortMeasurementSequence_MAXLEN"/>
+          <struct name="MeasurementUpdate">
+            <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+            <member name="timeMeasured" type="nonBasic" nonBasicTypeName="tms::ClockMonotonic"/>
+            <member name="externalMeasurement" type="nonBasic" nonBasicTypeName="tms::dc::PowerPortMeasurementSequence"/>
+            <member name="internalMeasurement" type="nonBasic" nonBasicTypeName="tms::dc::PowerPortMeasurementSequence"/>
+          </struct>
+          <struct name="LoadSharingParameters" nested="true">
+            <member name="portNumber" type="nonBasic" nonBasicTypeName="tms::PowerPortNumber"/>
+            <member name="referenceVoltage" type="nonBasic" nonBasicTypeName="tms::ControlCurve"/>
+            <member name="minAmperage" type="float32"/>
+            <member name="maxAmperage" type="float32"/>
+            <member name="minVoltage" type="float32"/>
+            <member name="maxVoltage" type="float32"/>
+          </struct>
+          <const name="LoadSharingParameterSequence_MINLEN" type="uint32" value="1"/>
+          <const name="LoadSharingParameterSequence_MAXLEN" type="uint32" value="tms::MAX_PORTS"/>
+          <typedef name="LoadSharingParameterSequence" type="nonBasic" nonBasicTypeName="tms::dc::LoadSharingParameters" sequenceMaxLength="tms::dc::LoadSharingParameterSequence_MAXLEN"/>
+          <struct name="LoadSharingRequest">
+            <member name="requestId" type="nonBasic" nonBasicTypeName="tms::PowerPortConfigRequest" key="true"/>
+            <member name="sequenceId" type="nonBasic" nonBasicTypeName="tms::RequestSequence"/>
+            <member name="parameters" type="nonBasic" nonBasicTypeName="tms::dc::LoadSharingParameters"/>
+          </struct>
+          <struct name="LoadSharingState">
+            <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+            <member name="config" type="nonBasic" nonBasicTypeName="tms::ConfigId"/>
+            <member name="parameters" type="nonBasic" nonBasicTypeName="tms::dc::LoadSharingParameterSequence"/>
+          </struct>
+        </module>
+        <struct name="StorageUpdate">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="internalVoltage" type="float32"/>
+          <member name="stateOfCharge" type="float32" min="0" max="1"/>
+          <member name="availableEnergy" type="float32"/>
+          <member name="holdTime" type="float32"/>
+          <member name="chargeTime" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="dischargeTime" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="maxChargeTime" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="maxDischargeTime" type="nonBasic" nonBasicTypeName="tms::Curve2D"/>
+          <member name="maxChargeRate" type="float32" min="0"/>
+          <member name="maxDischargeRate" type="float32" max="0"/>
+        </struct>
+        <struct name="ControlServiceInfo" nested="true">
+          <member name="mc" type="nonBasic" nonBasicTypeName="tms::MicrogridControllerInfo" optional="true"/>
+          <member name="md" type="nonBasic" nonBasicTypeName="tms::MicrogridDashboardInfo" optional="true"/>
+        </struct>
+        <struct name="PowerDeviceInfo" nested="true">
+          <member name="powerPorts" type="nonBasic" nonBasicTypeName="tms::PowerPortInfoSequence"/>
+          <member name="grounds" type="nonBasic" nonBasicTypeName="tms::GroundingInfoSequence"/>
+          <member name="conversion" type="nonBasic" nonBasicTypeName="tms::ConversionInfo" optional="true"/>
+          <member name="distribution" type="nonBasic" nonBasicTypeName="tms::DistributionInfo" optional="true"/>
+          <member name="source" type="nonBasic" nonBasicTypeName="tms::SourceInfo" optional="true"/>
+          <member name="storage" type="nonBasic" nonBasicTypeName="tms::StorageInfo" optional="true"/>
+          <member name="load" type="nonBasic" nonBasicTypeName="tms::LoadInfo" optional="true"/>
+        </struct>
+        <struct name="DeviceInfo">
+          <member name="deviceId" type="nonBasic" nonBasicTypeName="tms::Identity" key="true"/>
+          <member name="role" type="nonBasic" nonBasicTypeName="tms::DeviceRole"/>
+          <member name="product" type="nonBasic" nonBasicTypeName="tms::ProductInfo"/>
+          <member name="topics" type="nonBasic" nonBasicTypeName="tms::TopicInfo"/>
+          <member name="controlHardware" type="nonBasic" nonBasicTypeName="tms::ControlHardwareInfo" optional="true"/>
+          <member name="powerHardware" type="nonBasic" nonBasicTypeName="tms::PowerHardwareInfo" optional="true"/>
+          <member name="controlParameters" type="nonBasic" nonBasicTypeName="tms::ParameterMetadataSequence" optional="true"/>
+          <member name="metricParameters" type="nonBasic" nonBasicTypeName="tms::ParameterMetadataSequence" optional="true"/>
+          <member name="controlService" type="nonBasic" nonBasicTypeName="tms::ControlServiceInfo" optional="true"/>
+          <member name="powerDevice" type="nonBasic" nonBasicTypeName="tms::PowerDeviceInfo" optional="true"/>
+        </struct>
+      </module>
+    </types>
+
+    <qos_library name="NewQosLibrary1">
+    </qos_library>
+    <!-- *********************************************************** -->
+    <!-- TMS QOS library: Created based on the TMS-TGP MILSTD QoS profile -->
+    <!-- *********************************************************** -->
+    <qos_library name="TmsTgpQosLibrary">
+      <!-- Start of TMS profiles -->
+      <qos_profile name="tms_base">
+      </qos_profile>
+      <qos_profile name="PublishLast" base_name="tms_base">
+        <datareader_qos>
+          <durability>
+            <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>RELIABLE_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+        </datareader_qos>
+        <datawriter_qos>
+          <durability>
+            <kind>TRANSIENT_LOCAL_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>RELIABLE_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+          <ownership_strength>
+            <value>1</value>
+          </ownership_strength>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="Rare" base_name="tms_base">
+        <datareader_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>2000</sec>
+              <nanosec>0</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+        </datareader_qos>
+        <datawriter_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>2000</sec>
+              <nanosec>0</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+          <ownership_strength>
+            <value>1</value>
+          </ownership_strength>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="Slow" base_name="tms_base">
+        <datareader_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>20</sec>
+              <nanosec>0</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+        </datareader_qos>
+        <datawriter_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>20</sec>
+              <nanosec>0</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+          <ownership_strength>
+            <value>1</value>
+          </ownership_strength>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="Medium" base_name="tms_base" is_default_qos="true">
+        <datareader_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>3</sec>
+              <nanosec>0</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+        </datareader_qos>
+        <datawriter_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>3</sec>
+              <nanosec>0</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+          <ownership_strength>
+            <value>1</value>
+          </ownership_strength>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="Continuous" base_name="tms_base">
+        <datareader_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>2</sec>
+              <nanosec>0</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+        </datareader_qos>
+        <datawriter_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>2</sec>
+              <nanosec>0</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>BEST_EFFORT_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+          <ownership_strength>
+            <value>1</value>
+          </ownership_strength>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="Command" base_name="tms_base">
+        <datareader_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>RELIABLE_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+        </datareader_qos>
+        <datawriter_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>RELIABLE_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+          <ownership_strength>
+            <value>1</value>
+          </ownership_strength>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="Response" base_name="tms_base">
+        <datareader_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>RELIABLE_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+        </datareader_qos>
+        <datawriter_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>RELIABLE_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>1</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+          <ownership_strength>
+            <value>1</value>
+          </ownership_strength>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="Reply" base_name="tms_base">
+        <datareader_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>RELIABLE_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>128</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+        </datareader_qos>
+        <datawriter_qos>
+          <durability>
+            <kind>VOLATILE_DURABILITY_QOS</kind>
+          </durability>
+          <deadline>
+            <period>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </period>
+          </deadline>
+          <liveliness>
+            <kind>AUTOMATIC_LIVELINESS_QOS</kind>
+            <lease_duration>
+              <sec>DURATION_INFINITE_SEC</sec>
+              <nanosec>DURATION_INFINITE_NSEC</nanosec>
+            </lease_duration>
+          </liveliness>
+          <reliability>
+            <kind>RELIABLE_RELIABILITY_QOS</kind>
+          </reliability>
+          <history>
+            <kind>KEEP_LAST_HISTORY_QOS</kind>
+            <depth>128</depth>
+          </history>
+          <ownership>
+            <kind>EXCLUSIVE_OWNERSHIP_QOS</kind>
+          </ownership>
+          <ownership_strength>
+            <value>1</value>
+          </ownership_strength>
+        </datawriter_qos>
+      </qos_profile>
+    </qos_library>
+
+    <!-- ************************************************************** -->
+    <!-- TMS Domain library: Update with additional types and topics as needed. -->
+    <!-- ************************************************************** -->
+    <domain_library name="TmsDomainLibrary">
+      <domain name="TmsDomain" domain_id="0">
+        <register_type name="tms::ActiveDiagnosticState" type_ref="tms::ActiveDiagnosticState"/>
+        <register_type name="tms::DeviceInfo" type_ref="tms::DeviceInfo"/>
+        <register_type name="tms::Heartbeat" type_ref="tms::Heartbeat"/>
+        <register_type name="tms::PowerHardwareUpdate" type_ref="tms::PowerHardwareUpdate"/>
+        <register_type name="tms::StorageUpdate" type_ref="tms::StorageUpdate"/>
+        <register_type name="tms::ActiveMicrogridControllerState" type_ref="tms::ActiveMicrogridControllerState"/>
+        <register_type name="tms::ControlParameterRequest" type_ref="tms::ControlParameterRequest"/>
+        <register_type name="tms::ControlParameterState" type_ref="tms::ControlParameterState"/>
+        <register_type name="tms::Reply" type_ref="tms::Reply"/>
+        <register_type name="tms::MetricParameterState" type_ref="tms::MetricParameterState"/>
+        <register_type name="tms::GroundingCircuitState" type_ref="tms::GroundingCircuitState"/>
+        <register_type name="tms::GroundingCircuitRequest" type_ref="tms::GroundingCircuitRequest"/>
+        <register_type name="tms::EnergyStartStopState" type_ref="tms::EnergyStartStopState"/>
+        <register_type name="tms::EnergyStartStopRequest" type_ref="tms::EnergyStartStopRequest"/>
+        <register_type name="tms::PowerPortState" type_ref="tms::PowerPortState"/>
+        <register_type name="tms::PowerSwitchRequest" type_ref="tms::PowerSwitchRequest"/>
+        <register_type name="tms::ac::MeasurementUpdate" type_ref="tms::ac::MeasurementUpdate"/>
+        <register_type name="tms::dc::MeasurementUpdate" type_ref="tms::dc::MeasurementUpdate"/>
+        <register_type name="tms::ac::LoadSharingState" type_ref="tms::ac::LoadSharingState"/>
+        <register_type name="tms::dc::LoadSharingRequest" type_ref="tms::dc::LoadSharingRequest"/>
+        <register_type name="tms::dc::LoadSharingState" type_ref="tms::dc::LoadSharingState"/>
+        <register_type name="tms::ac::LoadSharingRequest" type_ref="tms::ac::LoadSharingRequest"/>
+        <register_type name="tms::ClockState" type_ref="tms::ClockState"/>
+        <register_type name="tms::AuthorizationToEnergizeResult" type_ref="tms::AuthorizationToEnergizeResult"/>
+        <register_type name="tms::IdentityNicknameState" type_ref="tms::IdentityNicknameState"/>
+        <register_type name="tms::IdentityNicknameRequest" type_ref="tms::IdentityNicknameRequest"/>
+        <register_type name="tms::DeviceIcon" type_ref="tms::DeviceIcon"/>
+        <register_type name="tms::ControlHardwareUpdate" type_ref="tms::ControlHardwareUpdate"/>
+        <register_type name="tms::OperatorIntentState" type_ref="tms::OperatorIntentState"/>
+        <register_type name="tms::OperatorIntentRequest" type_ref="tms::OperatorIntentRequest"/>
+        <topic name="ActiveDiagnosticState" register_type_ref="tms::ActiveDiagnosticState"/>
+        <topic name="DeviceInfo" register_type_ref="tms::DeviceInfo"/>
+        <topic name="Heartbeat" register_type_ref="tms::Heartbeat"/>
+        <topic name="PowerHardwareUpdate" register_type_ref="tms::PowerHardwareUpdate"/>
+        <topic name="StorageUpdate" register_type_ref="tms::StorageUpdate"/>
+        <topic name="ActiveMicrogridControllerState" register_type_ref="tms::ActiveMicrogridControllerState"/>
+        <topic name="ControlParameterRequest" register_type_ref="tms::ControlParameterRequest"/>
+        <topic name="ControlParameterState" register_type_ref="tms::ControlParameterState"/>
+        <topic name="Reply" register_type_ref="tms::Reply"/>
+        <topic name="MetricParameterState" register_type_ref="tms::MetricParameterState"/>
+        <topic name="GroundingCircuitState" register_type_ref="tms::GroundingCircuitState"/>
+        <topic name="GroundingCircuitRequest" register_type_ref="tms::GroundingCircuitRequest"/>
+        <topic name="EnergyStartStopState" register_type_ref="tms::EnergyStartStopState"/>
+        <topic name="EnergyStartStopRequest" register_type_ref="tms::EnergyStartStopRequest"/>
+        <topic name="PowerPortState" register_type_ref="tms::PowerPortState"/>
+        <topic name="PowerSwitchRequest" register_type_ref="tms::PowerSwitchRequest"/>
+        <topic name="AcMeasurementUpdate" register_type_ref="tms::ac::MeasurementUpdate"/>
+        <topic name="DcMeasurementUpdate" register_type_ref="tms::dc::MeasurementUpdate"/>
+        <topic name="AcLoadSharingState" register_type_ref="tms::ac::LoadSharingState"/>
+        <topic name="DcLoadSharingRequest" register_type_ref="tms::dc::LoadSharingRequest"/>
+        <topic name="DcLoadSharingState" register_type_ref="tms::dc::LoadSharingState"/>
+        <topic name="AcLoadSharingRequest" register_type_ref="tms::ac::LoadSharingRequest"/>
+        <topic name="ClockState" register_type_ref="tms::ClockState"/>
+        <topic name="AuthorizationToEnergizeResult" register_type_ref="tms::AuthorizationToEnergizeResult"/>
+        <topic name="IdentityNicknameState" register_type_ref="tms::IdentityNicknameState"/>
+        <topic name="IdentityNicknameRequest" register_type_ref="tms::IdentityNicknameRequest"/>
+        <topic name="DeviceIcon" register_type_ref="tms::DeviceIcon"/>
+        <topic name="ControlHardwareUpdate" register_type_ref="tms::ControlHardwareUpdate"/>
+        <topic name="OperatorIntentState" register_type_ref="tms::OperatorIntentState"/>
+        <topic name="OperatorIntentRequest" register_type_ref="tms::OperatorIntentRequest"/>
+      </domain>
+    </domain_library>
+
+    <!-- ************************************************************** -->
+    <!-- TMS Participant library:  -->
+    <!-- ************************************************************** -->
+    <domain_participant_library name="TmsParticipantLibrary">
+      <!-- Publisher -->
+      <domain_participant name="TmsParticipant" domain_ref="TmsDomainLibrary::TmsDomain">
+        <publisher name="TmsPublisher">
+          <data_writer name="DeviceInfoWriter" topic_ref="DeviceInfo">
+            <datawriter_qos>
+              <base_name>
+                <element>TmsTgpQosLibrary::PublishLast</element>
+              </base_name>
+              <user_data>
+                <!-- deviceId "python-1" as 2 byte hex characters -->
+                <value>707974686F6E2D31</value>
+              </user_data>
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="ActiveDiagnosticStateWriter" topic_ref="ActiveDiagnosticState">
+            <datawriter_qos>
+              <base_name>
+                <element>TmsTgpQosLibrary::PublishLast</element>
+              </base_name>
+              <user_data>
+                <!-- deviceId "python-1" as 2 byte hex characters -->
+                <value>707974686F6E2D31</value>
+              </user_data>
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="HeartbeatWriter" topic_ref="Heartbeat">
+            <datawriter_qos>
+              <base_name>
+                <element>TmsTgpQosLibrary::Medium</element>
+              </base_name>
+              <user_data>
+                <!-- deviceId "python-1" as 2 byte hex characters -->
+                <value>707974686F6E2D31</value>
+              </user_data>
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="ControlParameterRequestWriter" topic_ref="ControlParameterRequest">
+            <datawriter_qos base_name="TmsTgpQosLibrary::Command">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="ReplyWriter" topic_ref="Reply">
+            <datawriter_qos base_name="TmsTgpQosLibrary::Reply">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="MetricParameterStateWriter" topic_ref="MetricParameterState">
+            <datawriter_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="GroundingCircuitRequestWriter" topic_ref="GroundingCircuitRequest">
+            <datawriter_qos base_name="TmsTgpQosLibrary::Command">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="EnergyStartStopRequestWriter" topic_ref="EnergyStartStopRequest">
+            <datawriter_qos base_name="TmsTgpQosLibrary::Command">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="PowerSwitchRequestWriter" topic_ref="PowerSwitchRequest">
+            <datawriter_qos base_name="TmsTgpQosLibrary::Command">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="dc::LoadSharingRequestWriter" topic_ref="DcLoadSharingRequest">
+            <datawriter_qos base_name="TmsTgpQosLibrary::Command">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="ac::LoadSharingRequestWriter" topic_ref="AcLoadSharingState">
+            <datawriter_qos base_name="TmsTgpQosLibrary::Command">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="ClockStaterWriter" topic_ref="ClockState">
+            <datawriter_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="IdentityNicknameStateWriter" topic_ref="IdentityNicknameState">
+            <datawriter_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="DeviceIconWriter" topic_ref="DeviceIcon">
+            <datawriter_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="ControlHardwareUpdateWriter" topic_ref="ControlHardwareUpdate">
+            <datawriter_qos base_name="TmsTgpQosLibrary::Slow">
+            </datawriter_qos>
+          </data_writer>
+          <data_writer name="OperatorIntentStateWriter" topic_ref="OperatorIntentState">
+            <datawriter_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datawriter_qos>
+          </data_writer>
+        </publisher>
+        <domain_participant_qos>
+          <!-- Setting the user_data here is defined in the XSD but does not appear to work. -->
+          <user_data>
+            <!-- deviceId "python-1" as 2 byte hex characters -->
+            <value>707974686F6E2D31</value>
+          </user_data>
+        </domain_participant_qos>
+      
+        <!-- Subscriber -->
+        <subscriber name="TmsSubscriber">
+          <data_reader name="DeviceInfoReader" topic_ref="DeviceInfo">
+            <datareader_qos>
+              <base_name>
+                <element>TmsTgpQosLibrary::PublishLast</element>
+              </base_name>
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="HeartbeatReader" topic_ref="Heartbeat">
+            <datareader_qos>
+              <base_name>
+                <element>TmsTgpQosLibrary::Medium</element>
+              </base_name>
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="PowerHardwareUpdateReader" topic_ref="PowerHardwareUpdate">
+            <datareader_qos base_name="TmsTgpQosLibrary::Slow">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="StorageUpdateReader" topic_ref="StorageUpdate">
+            <datareader_qos base_name="TmsTgpQosLibrary::Slow">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="ActiveDiagnosticStateReader" topic_ref="ActiveDiagnosticState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="ActiveMicrogridControllerStateReader" topic_ref="ActiveMicrogridControllerState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="ControlParameterStateReader" topic_ref="ControlParameterState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="ReplyReader" topic_ref="Reply">
+            <datareader_qos base_name="TmsTgpQosLibrary::Reply">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="MetricParameterStateReader" topic_ref="MetricParameterState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="GroundingCircuitStateReader" topic_ref="GroundingCircuitState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="EnergyStartStopStateReader" topic_ref="EnergyStartStopState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="PowerPortStateReader" topic_ref="PowerPortState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="ACMeasurementUpdateTypeReader" topic_ref="AcMeasurementUpdate">
+            <datareader_qos base_name="TmsTgpQosLibrary::Medium">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="dc::MeasurementUpdateReader" topic_ref="DcMeasurementUpdate">
+            <datareader_qos base_name="TmsTgpQosLibrary::Medium">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="ac::LoadSharingStateReader" topic_ref="AcLoadSharingState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="dc::LoadSharingStateReader" topic_ref="DcLoadSharingState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="ClockStateReader" topic_ref="ClockState">
+            <datareader_qos base_name="TmsTgpQosLibrary::PublishLast">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="AuthorizationToEnergizeResultReader" topic_ref="AuthorizationToEnergizeResult">
+            <datareader_qos base_name="TmsTgpQosLibrary::Response">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="IdentityNicknameRequestReader" topic_ref="IdentityNicknameRequest">
+            <datareader_qos base_name="TmsTgpQosLibrary::Command">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="ControlHardwareUpdateReader" topic_ref="ControlHardwareUpdate">
+            <datareader_qos base_name="TmsTgpQosLibrary::Slow">
+            </datareader_qos>
+          </data_reader>
+          <data_reader name="OperatorIntentRequestReader" topic_ref="OperatorIntentRequest">
+            <datareader_qos base_name="TmsTgpQosLibrary::Command">
+            </datareader_qos>
+          </data_reader>
+        </subscriber>
+      </domain_participant>
+    </domain_participant_library>
+
+</dds>
