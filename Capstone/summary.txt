@@ -1,0 +1,81 @@
+Capstone/ DIRECTORY - TMS vs ROOT COMPARISON
+=============================================
+This answers: "what's the difference between the tms/ files and the plain
+root FORGE-IV controller files?"
+
+WHAT'S HERE
+-----------
+Capstone/
+  tms/   - see tms/summary.txt for per-file detail
+  xml/   - tmg_xml_24_mar.xml: the RTI Connext DDS configuration/type-definition
+           file (schema version 6.1.1) for the whole "tms" (Tactical Microgrid
+           System) data model. It defines every DDS topic name used by every
+           controller in this project (TOPIC_HEARTBEAT, TOPIC_DEVICE_INFO,
+           TOPIC_ENERGY_START_STOP_REQUEST, TOPIC_POWER_SWITCH_REQUEST,
+           TOPIC_AC_MEASUREMENT_UPDATE, etc.) plus the enums they use
+           (EnergyStartStopLevel: ESSL_OFF/WARM/IDLE/READY/READY_SYNCED/
+           OPERATIONAL, DeviceRole: ROLE_SOURCE/ROLE_LOAD/ROLE_STORAGE/
+           ROLE_DISTRIBUTION/ROLE_MICROGRID_CONTROLLER, DesiredCircuitContinuity:
+           DCC_OPEN/DCC_CLOSED, DtcSeverity, OperatingMode, etc.). EVERY
+           controller in this repo (root files and tms/ files alike) opens
+           this same XML via a relative path ("../xml/tmg_xml_24_mar.xml"),
+           so root and tms/ controllers are two different front-ends to the
+           exact same DDS contract - not two different systems.
+
+THE KEY FINDING: root and tms/ share literal duplicate files
+--------------------------------------------------------------
+Verified with a byte-for-byte `git diff` (0 differing lines in every case):
+
+  FORGE-IV/controller.py                            == Capstone/tms/controller.py
+  FORGE-IV/controller-test.py                       == Capstone/tms/controller-test.py
+  FORGE-IV/controller_typev_interface_patched.py    == Capstone/tms/controller_typev_interface_patched.py
+
+So three of the root files are literally copy-pasted into Capstone/tms/ with
+no changes at all. This means Capstone/tms/ is NOT a completely separate
+system - it shares a common ancestor/baseline with the root files.
+
+WHERE THEY DIVERGE: two separate "Type V" branches grew from that shared baseline
+------------------------------------------------------------------------------------
+After the shared baseline (controller_typev_interface_patched.py), the two
+locations each grew their OWN, mutually exclusive set of further iterations:
+
+  ROOT-ONLY files (not present in tms/):
+    controller_typev_interface.py              (the base version, predates the patch)
+    controller_typev_interface_patched_v2.py    (adds passive Load/Storage device tracking)
+    controller_typev_interface_phase_display.py (adds per-phase A/B/C telemetry display +
+                                                  stricter switch-confirmation logic)
+    controller-test-patched (1).py, controller-test-patched-v2.py
+                                                 (procedural-family iterations: role
+                                                  normalization, feeder-id filtering)
+
+  TMS-ONLY files (not present in root):
+    controller_typev_feeder_driven.py           (rewrite named MicrogridController;
+                                                  introduces PendingCommand/SequenceCounter
+                                                  command-lifecycle tracking + argparse CLI)
+    controller_typev_single_feeder_patched.py   (further-polished version of the above:
+                                                  first_present() robust parsing,
+                                                  message_has_fault(), feeder "locking")
+    tms_reader.py                               (passive read-only DDS topic monitor/debug tool)
+    test_script.py                              (throwaway Linux file-I/O smoke test)
+
+In short:
+  - The ROOT branch's later work is about ELECTRICAL FIDELITY: multi-device
+    (Load/Storage) discovery and rich per-phase (Va/Vb/Vc, Ia/Ib/Ic,
+    THD/imbalance/power-factor) diagnostics and display.
+  - The TMS branch's later work is about COMMAND RELIABILITY: a cleaner class
+    design, incrementing sequence ids, tracking each PowerSwitch/generator-
+    state command until it's acknowledged or times out, and "locking onto" a
+    single feeder id to avoid acting on the wrong device.
+  - Neither branch is a strict superset of the other - they are parallel
+    experiments that both started from the same controller_typev_interface_patched.py
+    baseline (and, further back, from controller.py/controller-test.py).
+
+PRACTICAL TAKEAWAY
+-------------------
+If you need per-phase electrical diagnostics / multi-device-type monitoring,
+look at the root folder's controller_typev_interface_phase_display.py
+(most advanced root file). If you need reliable command send/ack/timeout
+handling for feeder switching, look at
+Capstone/tms/controller_typev_single_feeder_patched.py (most advanced tms
+file). A future "final" controller would likely need to merge ideas from
+both of these rather than picking one as-is.

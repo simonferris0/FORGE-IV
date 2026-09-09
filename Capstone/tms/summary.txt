@@ -1,0 +1,102 @@
+Capstone/tms DIRECTORY - FILE SUMMARY
+=====================================
+(See ../../summary.txt for the root FORGE-IV controller files, and
+ ../summary.txt for how this tms/ folder relates to the root files.)
+
+BIG PICTURE
+-----------
+"tms" = Tactical Microgrid System, the same DDS type/topic namespace defined
+in ../xml/tmg_xml_24_mar.xml (module name="tms"). This folder is where the
+project's most advanced Type V controller experiments live, alongside a
+couple of duplicated baseline files and small utility/test scripts.
+
+PYTHON FILES
+------------
+
+controller.py (~751 lines)
+  - Baseline 2-generator/2-load procedural controller. IDENTICAL content to
+    ../../controller.py (root) - verified with a line-by-line diff, 0
+    differences. Same Source/Load/Controller classes, same
+    situation1_maintain() 6-configuration logic, same fuel_usage_calculation(),
+    same 3 log files written, same requestingDeviceId "python-1".
+
+controller-test.py (~986 lines)
+  - Also IDENTICAL to ../../controller-test.py (root) - verified, 0
+    differences. Adds the Feeder class, send_power_switch(), and the
+    hardcoded power-switch test at loop iterations 50/100. requestingDeviceId
+    "Sebastians Brain".
+
+controller_typev_interface_patched.py (~648 lines)
+  - Also IDENTICAL to ../../controller_typev_interface_patched.py (root) -
+    verified, 0 differences. OOP TypeVControllerInterface class tracking
+    Sources + a single Feeder with full 3-phase (A/B/C) voltage/current/
+    frequency/power-quality diagnostics (see root summary.txt for detail).
+
+  => These 3 files are simply copies shared between the root folder and this
+     tms/ folder (same code, kept in two locations).
+
+controller_typev_feeder_driven.py (~550 lines) - UNIQUE TO tms/, no root equivalent
+  - A from-scratch, cleaner OOP rewrite named `MicrogridController` (not
+    `TypeVControllerInterface`). Architecture is "feeder-driven": the
+    controller's whole job is to keep one Type III Feeder healthy and
+    energized, deciding actions rather than just diagnosing.
+  - Key building blocks:
+      SequenceCounter        - proper incrementing sequence id (not random.randint
+                                like Family A in the root folder)
+      PendingCommand         - tracks an in-flight DDS command (sent_at,
+                                acknowledged, reply payload) so the
+                                controller can detect command timeouts
+      FeederState.primary_port() - resolves which port number is "the" feeder port
+  - MicrogridController methods: publish_identity(), send_heartbeat(),
+    send_generator_state(), send_power_switch() (now tracked via
+    PendingCommand), read_device_info()/read_heartbeat()/...read_reply()
+    (one method per DDS topic), diagnose_feeder() (comm loss, diagnostic/
+    grounding faults, command timeout via COMMAND_TIMEOUT_S=5.0s, port-state
+    mismatch), decide_feeder_action() (OPEN_PORT / CLOSE_PORT / RETRY /
+    HOLD_AND_ALERT), execute_action(), maybe_boot_sources(), print_status(),
+    run() (the main loop). Also has a parse_args()/argparse CLI entry point,
+    which none of the other controllers in this project have.
+  - No file logging - console-only status output.
+
+controller_typev_single_feeder_patched.py (~600 lines) - UNIQUE TO tms/, no root equivalent
+  - The most polished controller in the whole project. Same PendingCommand/
+    SequenceCounter/FeederState ideas as feeder_driven.py, but cleaned up
+    further:
+      first_present(data, paths, default) - pulls a value out of a dict by
+        trying several possible nested-key paths in order (robust to the
+        DDS message shape varying between simulator/hardware)
+      message_has_fault(msg) - scans a message's text for fault keywords
+        (FAULT, FAIL, ERROR, TRIP, ALARM, INVALID, UNSAFE, REJECT)
+      TypeVController class - ensure_feeder() "locks onto" one feeder id the
+        first time it's seen and treats any other feeder id as inconsistent;
+        decide_action() -> OPEN_PORT / RETRY_OPEN_PORT / CLOSE_PORT /
+        HOLD_AND_ALERT / NONE, gated by feeder.pending_command so a new
+        command is never sent while one is still awaiting a reply.
+  - Represents the "production candidate" end state of the tms/ branch of
+    development, analogous to how phase_display.py is the polished end state
+    of the root folder's branch.
+
+test_script.py (tiny, ~5 lines)
+  - Not part of the controller at all. Opens a hardcoded Linux path
+    (/home/michael/Desktop/result.txt) and appends one line of text. Pure
+    environment/file-I/O smoke test left over from development; the
+    hardcoded path will fail on Windows.
+
+tms_reader.py
+  - A passive, receive-only DDS listener/debugging tool - it binds ~11 input
+    (reader) topics (Heartbeat, DeviceInfo, ActiveDiagnosticState,
+    EnergyStartStopState, ControlParameterState, GroundingCircuitState,
+    PowerPortState, ACMeasurementUpdate, Reply, plus PowerHardwareUpdate/
+    ControlHardwareUpdate which are commented out) and no writers at all.
+    Prints (via pprint) whatever it receives. Useful for manually inspecting
+    what a running simulator/controller is actually publishing on the bus,
+    without risking sending any commands.
+
+NON-PYTHON FILES (generated at runtime, not source code)
+---------------------------------------------------------
+Generator_fuel_ups.txt              - refuel-event log, written by controller.py's fuel_usage_calculation()
+Generator_Information_24_Hours.txt  - per-loop log of gen states + total fuel used, written by situation1_maintain()
+Total_Real_Delivered_Combined.txt   - per-loop combined real power (kW) log
+  (Only controller.py/controller-test.py - the Family A style controllers -
+   write these files. The Type V controllers here print status to the
+   console instead.)

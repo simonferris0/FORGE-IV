@@ -1,0 +1,171 @@
+FORGE-IV ROOT DIRECTORY - FILE SUMMARY
+=======================================
+(Verified by reading full file contents and running `git diff` between versions.
+ See Capstone/summary.txt for how these root files relate to Capstone/tms/,
+ and Capstone/tms/summary.txt for the tms-specific controllers.)
+
+BIG PICTURE
+-----------
+All files here are variations of a "Type V" microgrid controller for a Tactical
+Microgrid System (TMS). They connect to an RTI Connext DDS bus (rti.open_connector)
+using the topic/type contract defined in Capstone/xml/tmg_xml_24_mar.xml, and they
+decide when to start/stop generators ("Sources") and open/close a distribution
+switch ("Feeder") based on load and electrical health.
+
+There are two INDEPENDENT evolutionary lines in this folder:
+
+  FAMILY A (procedural style): controller.py -> controller-test.py ->
+            "controller-test-patched (1).py" -> controller-test-patched-v2.py
+
+  FAMILY B (object-oriented "Type V interface" rewrite):
+            controller_typev_interface.py -> controller_typev_interface_patched.py ->
+            controller_typev_interface_patched_v2.py -> controller_typev_interface_phase_display.py
+
+Naming convention observed across both families:
+  - "test"          = first experimental extension of the base file
+  - "patched"        = first bug-fix / feature-refinement pass
+  - "patched-v2" / "v2" = a second, further refinement pass on top of "patched"
+  - "phase_display"  = a specialized production variant focused on per-phase
+                        (A/B/C) electrical telemetry and display
+
+===========================================================================
+FAMILY A - controller.py series (procedural, global-dict style)
+===========================================================================
+
+controller.py (base, ~939 lines)
+  - Original two-generator, two-load controller. Subscribes to Heartbeat,
+    DeviceInfo, EnergyStartStopState, ACMeasurementUpdate, etc.
+  - Classes: Source (rated power/state/fuel), Load, Controller.
+  - Core logic: situation1_maintain(gen1, gen2) - a 6-configuration decision
+    tree that turns gen1/gen2 ESSL state (OFF/OPERATIONAL) on or off depending
+    on whether one generator alone, or both together, can cover the combined
+    real power requested.
+  - fuel_usage_calculation() estimates gallons/hour burned from % load and
+    logs refuels; maximum_power() reports total available kW.
+  - Writes 3 log files each run: Total_Real_Delivered_Combined.txt,
+    Generator_Information_24_Hours.txt, Generator_fuel_ups.txt.
+  - requestingDeviceId (the controller's own DDS device id) = "python-1".
+
+controller-test.py (~986 lines) - diff vs controller.py: 99 insertions / 52 deletions
+  - Adds a new `Feeder` class (device_id, features, last_seen) and role
+    constants ROLE_MICROGRID_CONTROLLER=1, ROLE_DISTRIBUTION=5, so the
+    controller can now recognize a 3rd device type: a distribution/junction
+    switch ("Type III Feeder"), in addition to Source/Load/Controller.
+  - Adds send_power_switch() - publishes a PowerSwitchRequest to open/close a
+    feeder's port (DCC_OPEN / DCC_CLOSED).
+  - requestingDeviceId changed to "Sebastians Brain".
+  - situation1_maintain() logic itself is unchanged; this file is about
+    discovering/registering the new Feeder device type.
+
+controller-test-patched (1).py (~1118 lines) - diff vs controller-test.py: 103 insertions / 29 deletions
+  - Refactors ad-hoc role checks into normalize_role() (handles both numeric
+    and string role values, e.g. "ROLE_SOURCE" <-> 2).
+  - Adds helper functions: feeder_by_id(), ensure_feeder_registered()
+    (idempotent - won't double-register the same feeder), source_by_id(),
+    controller_exists().
+  - Feeders can now be discovered from many more topics (DeviceInfo,
+    Heartbeat, ActiveDiagnosticState, GroundingCircuitState, PowerPortState,
+    ACMeasurementUpdate, Reply), not just DeviceInfo.
+  - Adds hardcoded PowerSwitch test commands: at loop iteration i==50 it
+    opens "junction-node-sbc-1" port 0; at i==100 it closes it again (manual
+    smoke test of send_power_switch()).
+  - requestingDeviceId stays "Sebastians Brain".
+
+controller-test-patched-v2.py (~1153 lines) - diff vs patched(1): 32 insertions / 15 deletions
+  - Adds JUNCTION_NODE_DEVICE_IDS set and looks_like_feeder_device_id()
+    (matches ids starting with "junction-node" or "junction_", or in the
+    explicit set) so ONLY real feeder-like device ids get registered as
+    Feeders - a safety/precision filter over patched(1)'s "register anything
+    on these topics" approach.
+  - The hardcoded i==50/i==100 PowerSwitch test commands from patched(1) are
+    commented out ("Disabled hardcoded feeder test commands while debugging
+    message reception").
+  - Adds a broader `except Exception as e:` guard around DeviceInfo reading.
+  - This is the most defensive/production-leaning file in Family A.
+
+===========================================================================
+FAMILY B - controller_typev_interface.py series (OOP rewrite)
+===========================================================================
+This family abandons the procedural style entirely in favor of a single
+`TypeVControllerInterface` class using @dataclass models (SourceState,
+FeederState, SequenceCounter) and small dispatch methods (_read_all_topics,
+_diagnose_microgrid, _manage_generation, _manage_feeder,
+_publish_controller_diagnostics). It already tracks 3-phase (A/B/C) voltage,
+current, frequency and power-quality metrics (metric_params: THD, voltage
+imbalance, power factor) on the Feeder from the very first version - this is
+a materially more advanced design than Family A.
+
+controller_typev_interface.py (base, ~647 lines)
+  - Tracks Sources (role "ROLE_SOURCE" string only) and a single Feeder.
+  - _diagnose_microgrid() flags faults/advisories: HEARTBEAT_STALE,
+    MEASUREMENT_STALE, VOLTAGE_IMBALANCE, frequency out of range
+    (55-65 Hz acceptable / 58-62 Hz optimal), per-phase VTHD/ITHD/power-factor
+    problems, phase loss (voltage < 10V while energized), and switch-command
+    confirmation failures (OPEN_FAILED_POWER_STILL_PRESENT /
+    CLOSE_FAILED_NO_POWER_RESTORED).
+  - _manage_generation() boots Sources as load approaches capacity;
+    _manage_feeder() isolates the feeder on fault and restores it once safe.
+  - requestingDeviceId = "controller".
+
+controller_typev_interface_patched.py (~648 lines) - diff vs base: only 3 lines changed
+  - TINY change: adds ROLE_SOURCE_NUM = 2 and updates the device-info role
+    check to `role in (ROLE_SOURCE_NUM, ROLE_SOURCE_STR)`, so a Source
+    announcing its role as the integer 2 (not just the string "ROLE_SOURCE")
+    is now recognized. Everything else is identical to the base file.
+  - NOTE: this file is BYTE-FOR-BYTE IDENTICAL to
+    Capstone/tms/controller_typev_interface_patched.py (verified diff=0).
+
+controller_typev_interface_patched_v2.py (~715 lines) - diff vs patched: 77 insertions / 10 deletions
+  - Adds ROLE_LOAD_NUM/STR (3) and ROLE_STORAGE_NUM/STR (4) plus a new
+    lightweight `DeviceState` dataclass, and self.loads / self.storage /
+    self.other_devices dictionaries - the controller now discovers and
+    passively monitors Loads and Storage devices too (still only Sources and
+    the Feeder are actively controlled).
+  - Adds discovery print logging for "hps-" prefixed simulator devices and
+    for newly-seen loads/storage/other devices.
+  - Loosens/expands _looks_like_junction_node() to also match
+    "junction_node" (underscore) and an "jn-" prefix, while explicitly
+    excluding ids starting with "hps-".
+  - Simplifies _publish_controller_diagnostics(): stops building a freeform
+    "message" string/dict and instead just republishes deviceId via
+    set_string(), because the real DDS schema doesn't expose a message field
+    on ActiveDiagnosticState (this was found out through testing).
+  - _print_status_summary() gains "Loads:" / "Storage:" / "Other devices:"
+    sections.
+
+controller_typev_interface_phase_display.py (~662 lines) - diff vs patched_v2: 
+  - REMOVES the Loads/Storage/other_devices tracking added in patched_v2
+    (DeviceState class and the 3 dictionaries are deleted) - refocuses back
+    to Sources + single Feeder only.
+  - REVERTS _looks_like_junction_node() back to the original simple check
+    ("junction-node" or "sbc" in the id) - the junction_node/"jn-"/hps-
+    exclusion added in patched_v2 is removed again.
+  - Adds OPEN_CONFIRM_CURRENT_MAX_A (0.50 A) and OPEN_CONFIRM_POWER_MAX_KW
+    (0.10 kW) constants, and changes the open/close confirmation logic in
+    _diagnose_microgrid() to require BOTH meaningful per-phase current AND
+    meaningful aggregate real power (previously: real power OR voltage) -
+    a stricter, more accurate switch-state confirmation.
+  - Adds "[DISCOVERY] Feeder heartbeat candidate" / "Feeder measurement
+    candidate" debug logging for the first 10 loop iterations only (helps
+    commissioning: see which device ids show up before the feeder locks on).
+  - _print_status_summary() now prints full per-phase telemetry
+    (Va/Vb/Vc, Ia/Ib/Ic, FreqA/FreqB/FreqC/FreqAvg) instead of just the
+    averaged values - hence the file's name.
+  - This is effectively a "sibling" iteration off of patched_v2 rather than
+    a strict superset: it keeps the stricter switch-confirmation logic and
+    phase display, but drops the multi-device (Loads/Storage) tracking.
+
+===========================================================================
+QUICK REFERENCE TABLE
+===========================================================================
+File                                        | Style      | Unique focus
+---------------------------------------------|------------|----------------------------------
+controller.py                                | procedural | base 2-gen/2-load control + fuel log
+controller-test.py                           | procedural | + Feeder device type, power switch
+controller-test-patched (1).py               | procedural | + role normalization, feeder helpers
+controller-test-patched-v2.py                | procedural | + strict feeder-id filtering (safety)
+controller_typev_interface.py                | OOP        | base: Source+Feeder, phase diagnostics
+controller_typev_interface_patched.py        | OOP        | + numeric Source role support (tiny diff)
+controller_typev_interface_patched_v2.py     | OOP        | + Loads/Storage passive monitoring
+controller_typev_interface_phase_display.py  | OOP        | phase-level telemetry display + stricter
+                                              |            | switch confirmation (drops Loads/Storage)
