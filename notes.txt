@@ -1,0 +1,2 @@
+Whenever you open a terminal to open this project, do this:
+source ~/FORGE-IV-SS6/.venv/bin/activate
