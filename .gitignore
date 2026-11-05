@@ -1,0 +1,15 @@
+# Local Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# New scratch outputs only; preserve tracked historical measurement logs
+/output/
+/outputs/
