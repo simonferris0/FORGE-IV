@@ -1,8 +1,8 @@
 # Controller architecture and development families
 
-The active [controller](../controller_typev_interface_patched_v2.py) is a standalone `TypeVControllerInterface`, with dataclasses for source, feeder, generic device, and sequence state. It does not import the other controller scripts. Static import inspection found standard-library imports plus `rticonnextdds_connector`; no repository-local module imports or shell launch scripts/test framework configuration were found.
+The active [controller](../controller_typev_interface_patched_v2.py) is a standalone `TypeVControllerInterface`, with dataclasses for source, feeder, generic device, and sequence state. It does not import the other controller scripts. The controller imports standard-library modules and loads `rticonnextdds_connector` only inside `run()`. The [offline tests](../tests/test_monitoring.py) use fake DDS endpoints and the [independent observer](../tools/observe_requests.py) is separate from the active entry point.
 
-`run()` opens `TmsParticipantLibrary::TmsParticipant`, binds DDS readers and writers, publishes controller identity, and repeats:
+`run()` opens `TmsParticipantLibrary::TmsParticipant`, binds DDS readers and writers, publishes controller identity, and repeats in either mode:
 
 1. Publish controller heartbeat.
 2. Read discovery, heartbeat, state, electrical measurements, diagnostics, grounding, ports, replies, and control parameters.
@@ -12,7 +12,9 @@ The active [controller](../controller_typev_interface_patched_v2.py) is a standa
 
 Controller identity is `controller`. Sources enter `self.sources` from numeric role 2 or string `ROLE_SOURCE` in `DeviceInfo`. Loads, storage, and other devices have separate discovery dictionaries. State/measurement samples for undiscovered source IDs are ignored. Source ratings are read from `powerDevice.source.loadSharing.maxRealPower` with the existing 0.8 factor; measured real/reactive power is converted to kW/kVAR. Measurements use only the first `externalMeasurement` port. Feeder measurements retain phase A/B/C voltage, current, frequency, and power.
 
-`_manage_generation()` automatically requests OPERATIONAL for OFF/UNKNOWN sources on its cooldown, plus additional capacity under load. `_manage_feeder()` can request isolation/restoration. The label `HOLD_MONITORING` in a feeder action does not provide a controller-wide monitoring-only mode. `_safe_take()` returns an empty list on reader or sample conversion exceptions, making failures look like absent data. None of these behaviors changed in cleanup.
+With `--enable-control`, `_manage_generation()` automatically requests OPERATIONAL for OFF/UNKNOWN sources on its cooldown, plus additional capacity under load. `_manage_feeder()` can request isolation/restoration. The label `HOLD_MONITORING` in a feeder action does not provide a controller-wide monitoring-only mode. Monitoring is the default and guards both command-writing helpers before sequence allocation, writer mutation, and sent-state updates. Helpers return whether they sent a request; the generation manager records its retry timestamp only on success. Feeder `intended_action` describes a decision, not a transmitted command. Control-mode decisions and thresholds are unchanged.
+
+`_safe_take()` still returns an empty list on failed reads/conversions, but reports unexpected exceptions with reader/topic/operation context; expected wait timeouts and empty reads are quiet. `_read_all_topics()` also reports unexpected topic-processing errors and continues with the remaining topics. Repeated messages are limited to one per reader/operation/exception type every 30 seconds, with skipped-repeat counts on the next report. These Python diagnostics do not intercept or silence native middleware errors. See the [diagnostic runbook](dds-diagnostics.md).
 
 ## Separate historical lines
 

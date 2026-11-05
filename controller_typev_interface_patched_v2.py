@@ -1,4 +1,5 @@
 import sys
+import argparse
 import time
 import pprint
 from dataclasses import dataclass, field
@@ -116,7 +117,10 @@ class FeederState:
 
 
 class TypeVControllerInterface:
-    def __init__(self, xml_path: Optional[str] = None):
+    def __init__(self, xml_path: Optional[str] = None, *, enable_control: bool = False):
+        self.enable_control = enable_control
+        self._log_times: Dict[tuple, Tuple[float, int]] = {}
+        self._timeout_errors = (TimeoutError,)
         self.pp = pprint.PrettyPrinter(indent=2)
         self.seq = SequenceCounter()
         self.sources: Dict[str, SourceState] = {}
@@ -136,8 +140,11 @@ class TypeVControllerInterface:
     def run(self) -> None:
         print("Start", repr(__file__))
         print("Using XML:", self.xml_path)
+        print(f"[MODE] {self.mode_label}", flush=True)
 
         import rticonnextdds_connector as rti
+
+        self._timeout_errors = (TimeoutError, rti.TimeoutError)
 
         with rti.open_connector(
             config_name="TmsParticipantLibrary::TmsParticipant",
@@ -229,36 +236,68 @@ class TypeVControllerInterface:
     # DDS readers
     # ------------------------------------------------------------------
 
-    def _safe_take(self, reader, wait_ms: int = 0) -> List[dict]:
-        try:
-            if wait_ms > 0:
+    def _log_throttled(self, key: tuple, message: str, *, error: bool = False) -> None:
+        now = time.monotonic()
+        previous = self._log_times.get(key)
+        if previous is not None and now - previous[0] < 30.0:
+            self._log_times[key] = (previous[0], previous[1] + 1)
+            return
+        repeated = f" ({previous[1]} repeats since last report)" if previous and previous[1] else ""
+        print(message + repeated, file=sys.stderr if error else sys.stdout, flush=True)
+        self._log_times[key] = (now, 0)
+
+    def _reader_error(self, context: str, operation: str, exc: Exception) -> None:
+        self._log_throttled(
+            ("reader", context, operation, type(exc)),
+            f"[DDS ERROR] {context} during {operation}: {type(exc).__name__}: {exc!r}",
+            error=True,
+        )
+
+    def _safe_take(self, reader, wait_ms: int = 0, *, context: str = "unknown reader/topic") -> List[dict]:
+        if wait_ms > 0:
+            try:
                 reader.wait(wait_ms)
+            except self._timeout_errors:
+                return []  # An ordinary no-data wait timeout is expected.
+            except Exception as exc:
+                self._reader_error(context, "wait", exc)
+                return []
+        try:
             reader.take()
-        except Exception:
+        except Exception as exc:
+            self._reader_error(context, "take", exc)
             return []
 
         results: List[dict] = []
         try:
             for sample in reader.samples.valid_data_iter:
                 results.append(sample.get_dictionary())
-        except Exception:
+        except Exception as exc:
+            self._reader_error(context, "sample conversion", exc)
             return []
         return results
 
     def _read_all_topics(self) -> None:
-        self._read_device_info()
-        self._read_heartbeat()
-        self._read_energy_start_stop_state()
-        self._read_ac_measurement_update()
-        self._read_metric_parameter_state()
-        self._read_active_diagnostics()
-        self._read_grounding()
-        self._read_power_port_state()
-        self._read_reply()
-        self._read_control_parameter_state()
+        handlers = (
+            (self._read_device_info, "TmsSubscriber::DeviceInfoReader / DeviceInfo"),
+            (self._read_heartbeat, "TmsSubscriber::HeartbeatReader / Heartbeat"),
+            (self._read_energy_start_stop_state, "TmsSubscriber::EnergyStartStopStateReader / EnergyStartStopState"),
+            (self._read_ac_measurement_update, "TmsSubscriber::ACMeasurementUpdateTypeReader / AcMeasurementUpdate"),
+            (self._read_metric_parameter_state, "TmsSubscriber::MetricParameterStateReader / MetricParameterState"),
+            (self._read_active_diagnostics, "TmsSubscriber::ActiveDiagnosticStateReader / ActiveDiagnosticState"),
+            (self._read_grounding, "TmsSubscriber::GroundingCircuitStateReader / GroundingCircuitState"),
+            (self._read_power_port_state, "TmsSubscriber::PowerPortStateReader / PowerPortState"),
+            (self._read_reply, "TmsSubscriber::ReplyReader / Reply"),
+            (self._read_control_parameter_state, "TmsSubscriber::ControlParameterStateReader / ControlParameterState"),
+        )
+        for handler, context in handlers:
+            try:
+                handler()
+            except Exception as exc:
+                self._reader_error(context, "topic processing", exc)
 
     def _read_device_info(self) -> None:
-        for msg in self._safe_take(self.deviceInfoReader, wait_ms=50 if self.loop_counter < 3 else 0):
+        for msg in self._safe_take(self.deviceInfoReader, wait_ms=50 if self.loop_counter < 3 else 0, context="TmsSubscriber::DeviceInfoReader / DeviceInfo"):
             role = msg.get("role")
             device_id = str(msg.get("deviceId", ""))
             if not device_id:
@@ -318,7 +357,7 @@ class TypeVControllerInterface:
                 print(f"[DISCOVERY] Other device: {device_id} role={role}")
 
     def _read_heartbeat(self) -> None:
-        for msg in self._safe_take(self.heartbeatReader):
+        for msg in self._safe_take(self.heartbeatReader, context="TmsSubscriber::HeartbeatReader / Heartbeat"):
             device_id = str(msg.get("deviceId", ""))
             if not device_id or device_id == "controller":
                 continue
@@ -332,7 +371,7 @@ class TypeVControllerInterface:
                 feeder.heartbeat_seq = msg.get("sequenceNumber")
 
     def _read_energy_start_stop_state(self) -> None:
-        for msg in self._safe_take(self.energyStartStopStateReader):
+        for msg in self._safe_take(self.energyStartStopStateReader, context="TmsSubscriber::EnergyStartStopStateReader / EnergyStartStopState"):
             device_id = str(msg.get("deviceId", ""))
             if device_id not in self.sources:
                 continue
@@ -349,7 +388,7 @@ class TypeVControllerInterface:
 
     def _read_ac_measurement_update(self) -> None:
         now = time.time()
-        for msg in self._safe_take(self.acMeasurementUpdateReader):
+        for msg in self._safe_take(self.acMeasurementUpdateReader, context="TmsSubscriber::ACMeasurementUpdateTypeReader / AcMeasurementUpdate"):
             device_id = str(msg.get("deviceId", ""))
             ex = msg.get("externalMeasurement", []) or []
             if not ex:
@@ -397,7 +436,7 @@ class TypeVControllerInterface:
                 self._infer_feeder_switch_state(feeder)
 
     def _read_metric_parameter_state(self) -> None:
-        for msg in self._safe_take(self.metricParameterStateReader):
+        for msg in self._safe_take(self.metricParameterStateReader, context="TmsSubscriber::MetricParameterStateReader / MetricParameterState"):
             device_id = str(msg.get("deviceId", ""))
             if not (self.feeder and device_id == self.feeder.device_id) and not self._looks_like_junction_node(device_id):
                 continue
@@ -414,19 +453,19 @@ class TypeVControllerInterface:
             feeder.tripped = feeder.metric_params.get("TRIPPED", 0.0) >= 0.5
 
     def _read_active_diagnostics(self) -> None:
-        for msg in self._safe_take(self.activeDiagnosticStateReader):
+        for msg in self._safe_take(self.activeDiagnosticStateReader, context="TmsSubscriber::ActiveDiagnosticStateReader / ActiveDiagnosticState"):
             device_id = str(msg.get("deviceId", ""))
             if device_id and device_id != "controller" and self._looks_like_junction_node(device_id):
                 self._ensure_feeder(device_id)
 
     def _read_grounding(self) -> None:
-        for msg in self._safe_take(self.groundingCircuitStateReader):
+        for msg in self._safe_take(self.groundingCircuitStateReader, context="TmsSubscriber::GroundingCircuitStateReader / GroundingCircuitState"):
             device_id = str(msg.get("deviceId", ""))
             if device_id and self._looks_like_junction_node(device_id):
                 self._ensure_feeder(device_id)
 
     def _read_power_port_state(self) -> None:
-        for msg in self._safe_take(self.powerPortStateReader):
+        for msg in self._safe_take(self.powerPortStateReader, context="TmsSubscriber::PowerPortStateReader / PowerPortState"):
             device_id = str(msg.get("deviceId", ""))
             if device_id and self._looks_like_junction_node(device_id):
                 feeder = self._ensure_feeder(device_id)
@@ -434,7 +473,7 @@ class TypeVControllerInterface:
                     feeder.port_number = int(msg.get("requestId", {}).get("portNumber", feeder.port_number))
 
     def _read_reply(self) -> None:
-        for msg in self._safe_take(self.replyReader):
+        for msg in self._safe_take(self.replyReader, context="TmsSubscriber::ReplyReader / Reply"):
             req = msg.get("requestId", {}) or {}
             device_id = str(req.get("targetDeviceId", ""))
             if device_id and self._looks_like_junction_node(device_id):
@@ -442,7 +481,7 @@ class TypeVControllerInterface:
                 feeder.last_switch_seq = str(msg.get("sequenceId", feeder.last_switch_seq or ""))
 
     def _read_control_parameter_state(self) -> None:
-        _ = self._safe_take(self.controlParameterStateReader)
+        _ = self._safe_take(self.controlParameterStateReader, context="TmsSubscriber::ControlParameterStateReader / ControlParameterState")
 
     # ------------------------------------------------------------------
     # Diagnosis / control
@@ -525,16 +564,16 @@ class TypeVControllerInterface:
             if source.state in ("ESSL_UNKNOWN", "ESSL_OFF"):
                 last = self.pending_source_boot.get(source.device_id, 0.0)
                 if time.time() - last >= COMMAND_COOLDOWN_SEC:
-                    self._send_generator_state(source.device_id, "ESSL_OPERATIONAL")
-                    self.pending_source_boot[source.device_id] = time.time()
+                    if self._send_generator_state(source.device_id, "ESSL_OPERATIONAL"):
+                        self.pending_source_boot[source.device_id] = time.time()
 
         if total_feeder_kw > 0.0 and available_kw > 0.0 and total_feeder_kw > (available_kw - RESERVE_MARGIN_KW):
             for source in self.sources.values():
                 if source.state in ("ESSL_OFF", "ESSL_READY", "ESSL_WARM", "ESSL_UNKNOWN"):
                     last = self.pending_source_boot.get(source.device_id, 0.0)
                     if time.time() - last >= COMMAND_COOLDOWN_SEC:
-                        self._send_generator_state(source.device_id, "ESSL_OPERATIONAL")
-                        self.pending_source_boot[source.device_id] = time.time()
+                        if self._send_generator_state(source.device_id, "ESSL_OPERATIONAL"):
+                            self.pending_source_boot[source.device_id] = time.time()
                         break
 
     def _manage_feeder(self) -> None:
@@ -580,7 +619,23 @@ class TypeVControllerInterface:
     # Command writers
     # ------------------------------------------------------------------
 
-    def _send_generator_state(self, target_device_id: str, to_level: str, from_level: str = "ESSL_ANY") -> None:
+    @property
+    def mode_label(self) -> str:
+        return "CONTROL ENABLED" if self.enable_control else "MONITOR ONLY — command requests blocked"
+
+    def _command_allowed(self, kind: str, target: str, intent: str) -> bool:
+        if self.enable_control:
+            return True
+        self._log_throttled(
+            ("suppressed", kind, target, intent),
+            f"[MONITOR] Suppressed {kind} -> {target}: {intent} (not sent)",
+        )
+        return False
+
+    def _send_generator_state(self, target_device_id: str, to_level: str, from_level: str = "ESSL_ANY") -> bool:
+        # Final command boundary: callers cannot bypass monitoring via this helper.
+        if not self._command_allowed("EnergyStartStopRequest", target_device_id, f"{from_level} -> {to_level}"):
+            return False
         seq = self.seq.next()
         payload = {
             "requestId": {
@@ -596,8 +651,12 @@ class TypeVControllerInterface:
         self.energyStartStopRequestWriter.instance.set_dictionary(payload)
         self.energyStartStopRequestWriter.write()
         print(f"[CMD] EnergyStartStopRequest -> {target_device_id} to {to_level} seq={seq}")
+        return True
 
-    def _send_power_switch(self, target_device_id: str, port_number: int, open_state: bool) -> None:
+    def _send_power_switch(self, target_device_id: str, port_number: int, open_state: bool) -> bool:
+        # Guard before sequence allocation, writer access, or sent-state updates.
+        if not self._command_allowed("PowerSwitchRequest", target_device_id, f"port={port_number} {'OPEN' if open_state else 'CLOSE'}"):
+            return False
         seq = self.seq.next()
         payload = {
             "requestId": {
@@ -617,6 +676,7 @@ class TypeVControllerInterface:
             self.feeder.last_switch_time = time.time()
             self.feeder.estimated_closed = not open_state
         print(f"[CMD] PowerSwitchRequest -> {target_device_id} port={port_number} continuity={payload['continuity']} seq={seq}")
+        return True
 
     # ------------------------------------------------------------------
     # Helpers
@@ -656,6 +716,7 @@ class TypeVControllerInterface:
 
     def _print_status_summary(self) -> None:
         print("\n================ TYPE V CONTROLLER STATUS ================")
+        print(f"Mode: {self.mode_label}")
         print(f"Loop: {self.loop_counter}")
         if self.feeder is None:
             print("Feeder: not discovered")
@@ -672,7 +733,7 @@ class TypeVControllerInterface:
             )
             print(
                 f"Feeder state: estimated_closed={f.estimated_closed} "
-                f"tripped={f.tripped} action={f.desired_action}"
+                f"tripped={f.tripped} intended_action={f.desired_action}"
             )
             if f.faults:
                 print("Faults:", ", ".join(sorted(set(f.faults))))
@@ -709,7 +770,16 @@ class TypeVControllerInterface:
         print("==========================================================\n")
 
 
+def parse_args(argv=None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="SS6 Type V controller (defaults to monitoring)")
+    parser.add_argument("xml_path", nargs="?", help="DDS XML path (pass Capstone/xml/tmg_xml_24_mar.xml from the repository root)")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--monitor-only", action="store_true", help="receive and publish identity/heartbeat/diagnostics; block command requests (default)")
+    mode.add_argument("--enable-control", action="store_true", help="enable the existing automatic source and feeder control logic")
+    return parser.parse_args(argv)
+
+
 if __name__ == "__main__":
-    xml_override = sys.argv[1] if len(sys.argv) > 1 else None
-    controller = TypeVControllerInterface(xml_override)
+    args = parse_args()
+    controller = TypeVControllerInterface(args.xml_path, enable_control=args.enable_control)
     controller.run()

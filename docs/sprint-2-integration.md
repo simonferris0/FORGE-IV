@@ -1,6 +1,6 @@
 # Sprint 2 — Type I / Type V integration plan
 
-This is a future work plan. Cleanup only organizes files and documentation; it does not implement monitoring-only mode or change the DDS contract.
+Monitoring mode and offline tests are now implemented; runtime acceptance and IPv6 migration remain pending. The DDS contract is unchanged.
 
 | Owner | Integration responsibility |
 | --- | --- |
@@ -10,7 +10,7 @@ This is a future work plan. Cleanup only organizes files and documentation; it d
 
 ## Next implementation, separately reviewed
 
-1. **Monitoring-only mode.** Add an explicit controller mode and verify that it prevents both source start/stop requests and feeder switch requests, including every automatic path. Agree whether identity, heartbeat, and diagnostic publications remain enabled. Keep the current baseline behavior available intentionally. Use isolated mocks or recorded samples to verify command suppression before equipment testing. No such mode exists yet.
+1. **Validate monitoring-only mode on the simulator.** The default and `--monitor-only` block source and feeder requests at the helpers; `--enable-control` retains existing automatic decisions. Identity, heartbeat, and existing device-ID-only diagnostic publication remain enabled. Follow the [Pi and simulator acceptance procedure](monitoring-validation.md) with an independent request observer. Offline fake-endpoint tests pass; runtime evidence is pending.
 2. **Source heartbeat tracking.** Associate source `Heartbeat.deviceId` with discovered sources; track sequence and local receipt time, display fresh/stale status, and agree on timeout and restart behavior. Existing feeder heartbeat handling does not cover this. Add tests for source versus feeder IDs, missing samples, and sequence resets as part of that implementation.
 
 ## Prototype sequence and evidence
@@ -23,6 +23,6 @@ This is a future work plan. Cleanup only organizes files and documentation; it d
 | AC measurements | Confirm `externalMeasurement`/port/line shapes, units, phase order, conversion, timestamp freshness, and missing fields using actual Type I samples. Current controller consumes the first external port only. |
 | Manual command/reply | After deliberate enablement, one manually triggered request to an agreed target; match requester, target, request sequence, status code/reason, and timeout. First reconcile the XML Reply shape with the current parser. Coordinate source actions with Simon. |
 
-Treat `_safe_take()` observability and the reply mismatch as separate implementation tasks; neither was fixed here. Do not infer source heartbeat reception from feeder status or discovery alone. Do not adopt an archived controller wholesale: the families contain different behaviors and assumptions.
+Python reader observability is improved. The native key-hash/deserialization errors and reply parser mismatch remain unresolved; capture runtime evidence using the [diagnostic runbook](dds-diagnostics.md). Do not infer source heartbeat reception from feeder status or discovery alone. Do not adopt an archived controller wholesale: the families contain different behaviors and assumptions.
 
-Completion of this cleanup provides no runtime, IPv6, DDS interoperability, or hardware success evidence.
+Local validation provides no runtime, IPv6, DDS interoperability, or hardware success evidence. Source heartbeat tracking is the next controller feature after monitoring acceptance.

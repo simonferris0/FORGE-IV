@@ -1,5 +1,7 @@
 # File inventory and cleanup evidence
 
+This inventory records the earlier cleanup snapshot. Its hashes and preservation claims apply to that operation. The subsequent monitoring change intentionally edits the active controller and current Markdown guides, and adds `tests/test_monitoring.py`, `tests/test_request_observer.py`, `tools/observe_requests.py`, `tools/build_ipv6_config.py`, `tests/test_ipv6_config.py`, and the monitoring, DDS diagnostic, and IPv6 runbooks. The baseline XML, historical scripts/summaries, and measurement logs remain unchanged by the monitoring work.
+
 Cleanup was performed on `ss6/sprint2-typei-link`. The starting working tree had 21 modified tracked files, including the active controller, XML, code variants, summaries, and a measurement log. No applicable `AGENTS.md` was found in the checkout or its ancestor directories. No branch switch, dependency installation, controller execution, commit, push, or merge was performed.
 
 All original tracked file contents were snapshotted before changes. Every original file is retained byte-for-byte, either at its original path or the destination below. There were **no Python deletions or code edits**, including duplicate copies. Git will show removals at old paths and untracked archive additions until staged; these are documented moves, not discarded code. The existing index was not staged or reset.
