@@ -362,6 +362,14 @@ class TypeVControllerInterface:
             if not device_id or device_id == "controller":
                 continue
 
+            # Heartbeat visibility must not depend on DeviceInfo or role discovery.
+            if not self.enable_control:
+                print(
+                    f"[HEARTBEAT RX] deviceId={device_id!r} "
+                    f"sequenceNumber={msg.get('sequenceNumber')!r}",
+                    flush=True,
+                )
+
             if self.feeder and device_id == self.feeder.device_id:
                 self.feeder.last_heartbeat = time.time()
                 self.feeder.heartbeat_seq = msg.get("sequenceNumber")
