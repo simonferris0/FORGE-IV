@@ -1,5 +1,41 @@
 # DDS key-hash/deserialization diagnosis
 
+## November 10/12 link logs: separate heartbeat and DeviceInfo evidence
+
+Reviewed [Trevor-named log](../outputs/trevor-link-20261110T153908Z.log) and [Simon-named log](../outputs/simon-link-20261112T150851Z.log) at branch commit `ceae9dc3271bf2f2ac3764f27010b0f7b8fff355`. Jeffrey identifies the Simon-named run as a **solo Type V run with the simulator off**. The filenames do not establish sender identity.
+
+Both first fail at `RTIXCdrInterpreter_checkPrimitiveRange`, decoding `tms::ControlHardwareInfo.minTemperature` as NaN outside `[-273, 10000]`, then fail decoding `DeviceInfo.controlHardware`, then report serialized-sample-to-keyhash/collator errors. Investigate the first range/deserialization failure before interpreting later key-hash lines as a separate defect. This establishes what the receiver decoded, not that a producer explicitly assigned NaN: a layout/representation mismatch could also produce an invalid interpretation.
+
+Both identify the **same failing writer** after `RECEIVE FROM`:
+
+```text
+0x01060A02,0x145B0000,0x0B6E0001:0x00000902
+```
+
+The leading GUID before `|RECEIVE FROM` is the local reader: Trevor-named run prefix `0101F9B8:BA3EE08C:5F205CC7`, Simon-named run prefix `0101FF8D:D7D6923E:19B55E07`. These prefixes differ from the failing writer prefix. Under ordinary same-participant publication this is evidence against attributing the error to that receiver participant's own startup writer. It does not exclude another local process/participant, remote device, configured/relayed identity, or a runtime sample/layout problem. Do not decode a source IP from the GUID or infer Trevor, Simon, a DDS vendor, or IPv4 from its digits. Map the writer to discovery and captured traffic as described in [validation](monitoring-validation.md).
+
+Neither old log displays external heartbeat IDs/sequences: the old handler only tracked feeder candidates. `Sources: none discovered` does not establish heartbeat absence. The active monitor now emits one unthrottled `[HEARTBEAT RX] deviceId=... sequenceNumber=...` line for each decoded external sample returned by its heartbeat reader, excluding `controller`, without waiting for DeviceInfo. This is separate from DeviceInfo decoding and does not register a source. It reports application heartbeat sequences, not RTPS protocol HEARTBEAT or writer sequence numbers. Sample loss in the best-effort reader remains possible.
+
+## Audit of our startup DeviceInfo producer
+
+`_publish_controller_identity()` sets deviceId and role, merges the following product/topic fields, then writes once. No explicit NaN or temperature assignment is present in this method; it is unchanged by the heartbeat patch.
+
+| Field | What Type V explicitly supplies | Baseline XML / omission |
+| --- | --- | --- |
+| deviceId, role | `controller`, numeric role 1 | Identity string key and microgrid-controller role. No key change. |
+| product.nsn | 13 character elements | Fixed 13-character NatoStockNumber array. |
+| product.manufacturerName, modelName | West Point / Type V Controller Interface | Both fit String32. |
+| Other product members | Not set | gtin is a required 14-character array; modelNumber, serialNumber, softwareVersion are required strings; platformId is optional. No explicit defaults on these members in XML. Their effective native values need runtime inspection. |
+| topics | dataModelVersion `1.2.3`; three empty topic lists | Required fields supplied; optional extensionTopics omitted. This data-model string is not the Connector/native build version. |
+| controlHardware | Entire optional struct omitted | If present, hasRealtimeClock (boolean), minTemperature/maxTemperature (float32, each bounded -273 to 10000), numNetworkPorts (uint16, min 0) are nonoptional members. No explicit `default` is defined for these fields. |
+| Other optional DeviceInfo metadata | powerHardware, controlParameters, metricParameters, controlService, powerDevice omitted | Omission is not an explicit invalid numeric assignment. |
+
+RTI documents that `set_dictionary()` preserves unspecified existing values, and that optional members can be cleared; documented `clear_members()` reset behavior sets optional members to None and ordinary numeric fields to zero. Those API rules do **not** establish this installed instance's pre-write contents or wire encoding. See [RTI Output reference](https://community.rti.com/static/documentation/connector/current/api/python/output.html) and [optional-member handling](https://community.rti.com/static/documentation/connector/current/api/python/data.html). The public pages identify themselves as 1.2.2; verify actual behavior with package 1.2.4/native 6.1.2.21 before a producer change.
+
+There is currently no verified producer bug in our startup method. Keep its writer, XML bounds, keys and native logging unchanged. Next, attribute the failing writer, compare its effective type/layout with this XML, and obtain that producer's pre-write `output.instance.get_dictionary()` plus its setter inputs using a controlled diagnostic run (do not assume a successful setter means the on-wire sample is valid).
+
+If the identified producer actually emits a present controlHardware struct with NaN and has no hardware metadata, the smallest valid proposed fix is to **unset that optional struct**, for example `output.instance.clear_member("controlHardware")` immediately before the identity write, after verifying optional-member interoperability on both sides. This is a conditional proposal, not applied here. If the struct must be published, all its required fields must be valid; temperature limits should come from the identified controller board/enclosure's verified operating specification and deployment configuration, with finite values, min <= max, and XML bounds enforced. hasRealtimeClock and numNetworkPorts should reflect actual configured hardware. A measured ambient temperature, arbitrary zeros, guessed Raspberry Pi limits, or relaxed bounds are not replacements for that metadata. Fix the attributed producer, rather than inserting unrelated values in Type V merely because its receiver reports the error.
+
 ## Evidence and scope
 
 Jeffrey observed `ammps30` discovery and ESSL_OPERATIONAL at Type V, with simulator OPERATIONAL / RemoteControl / actor `controller`. This strongly suggests that the earlier automatic source request reached the simulator and resulting state reached Type V. It does not establish heartbeat timing, AC measurements, reliable interoperability, or IPv6 transport. A missing feeder is expected in this source-only setup.
@@ -14,7 +50,7 @@ Supplied Type V runtime (existing `/home/forge/FORGE-IV-SS6/.venv`):
 | Import / `Connector.get_version()` | Completed successfully |
 | OS release, kernel, CPU architecture, bitness | Still needed |
 | Desktop simulator build and effective DDS config | Still needed |
-| Full native key-hash/deserialization error text | Still needed |
+| Native error chain | Available in the two November logs above; transport/source attribution still needed |
 
 The XML declares schema/version **6.1.1**; controller DeviceInfo advertises data-model string **1.2.3**. These labels are not the Python package version or native middleware version. The reported runtime builds do not establish the cause of errors or prove a working IPv6 transport. No RTI library is installed in the laptop inspection Python used for offline tests.
 

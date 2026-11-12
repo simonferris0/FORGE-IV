@@ -200,6 +200,59 @@ class MonitoringTests(unittest.TestCase):
         self.assertIn('Mode: MONITOR ONLY', self.out.getvalue())
         self.assert_no_sent_state(c)
 
+    def test_two_unregistered_typei_heartbeats_are_visible_without_commands(self):
+        c = controller()
+        for sequence in (501, 502):
+            c.heartbeatReader = Reader({'deviceId': 'unregistered-typei', 'sequenceNumber': sequence})
+            c._read_heartbeat()
+            c._manage_generation()
+            c._manage_feeder()
+        text = self.out.getvalue()
+        self.assertEqual(text.count('[HEARTBEAT RX]'), 2)
+        self.assertEqual(text.count("deviceId='unregistered-typei'"), 2)
+        self.assertIn('sequenceNumber=501', text)
+        self.assertIn('sequenceNumber=502', text)
+        self.assertEqual(c.sources, {})
+        self.assertIsNone(c.feeder)
+        self.assert_no_sent_state(c)
+
+    def test_own_heartbeat_is_not_displayed_or_registered(self):
+        c = controller()
+        c.heartbeatReader = Reader({'deviceId': 'controller', 'sequenceNumber': 99})
+        c._read_heartbeat()
+        self.assertNotIn('[HEARTBEAT RX]', self.out.getvalue())
+        self.assertEqual(c.sources, {})
+        self.assertIsNone(c.feeder)
+        self.assert_no_sent_state(c)
+
+    def test_heartbeat_visibility_survives_deviceinfo_conversion_failure(self):
+        c = controller()
+        for name in ('deviceInfoReader', 'heartbeatReader', 'energyStartStopStateReader',
+                     'acMeasurementUpdateReader', 'metricParameterStateReader',
+                     'activeDiagnosticStateReader', 'groundingCircuitStateReader',
+                     'powerPortStateReader', 'replyReader', 'controlParameterStateReader'):
+            setattr(c, name, Reader())
+        def fail():
+            raise RuntimeError('DeviceInfo conversion failed')
+        c.deviceInfoReader.samples.valid_data_iter = [SimpleNamespace(get_dictionary=fail)]
+        c.heartbeatReader = Reader({'deviceId': 'unregistered-typei', 'sequenceNumber': 503})
+        c._read_all_topics()
+        self.assertIn('DeviceInfo conversion failed', self.err.getvalue())
+        self.assertIn("deviceId='unregistered-typei' sequenceNumber=503", self.out.getvalue())
+        self.assertEqual(c.sources, {})
+        self.assert_no_sent_state(c)
+
+    def test_feeder_heartbeat_tracking_is_preserved_in_both_modes(self):
+        for enabled in (False, True):
+            c = controller(enabled)
+            c.heartbeatReader = Reader({'deviceId': 'junction-node-test', 'sequenceNumber': 504})
+            c._read_heartbeat()
+            self.assertEqual(c.feeder.device_id, 'junction-node-test')
+            self.assertEqual(c.feeder.heartbeat_seq, 504)
+            self.assertGreater(c.feeder.last_heartbeat, 0)
+            self.assertEqual(c.sources, {})
+            self.assert_no_sent_state(c)
+
     def test_cli_defaults_and_positional_xml(self):
         self.assertFalse(parse_args([]).enable_control)
         for args in (['config.xml'], ['--monitor-only', 'config.xml'], ['config.xml', '--monitor-only']):
