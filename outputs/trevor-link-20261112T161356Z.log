@@ -1,0 +1,284 @@
+Start '/home/forge/FORGE-IV-SS6/controller_typev_interface_patched_v2.py'
+Using XML: Capstone/xml/tmg_xml_24_mar.xml
+[MODE] MONITOR ONLY — command requests blocked
+Publishing controller DeviceInfo
+Type V controller interface loop started...
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 1
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] RTIXCdrInterpreter_checkPrimitiveRange:tms::ControlHardwareInfo:minTemperature deserialization error. Primitive value nan outside valid range [-273.000000, 10000.000000]
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] RTIXCdrInterpreter_fastDeserializeSample:tms::ControlHardwareInfo:minTemperature deserialization error
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] RTIXCdrInterpreter_fullDeserializeSample:tms::DeviceInfo:controlHardware deserialization error
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] DDS_DynamicData2TypePlugin_serialized_sample_to_keyhash:deserialization error: sample
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_serializedKeyOrSampleToKeyHash:!serialized sample to keyhash
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_getSampleKeyHashes:!serialized key/sample to keyhash
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_storeInlineQos:!get sample keyHashes
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_storeSampleToEntry:!store inline qos in entry
+[0x01013AB1,0x8B9FEF50,0x36390DC3:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_newData:!get entries
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997239
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=2
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 2
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997240
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=3
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 3
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997241
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=4
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 4
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997242
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=5
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 5
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997243
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=6
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 6
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997244
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=7
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 7
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997245
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=8
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 8
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997246
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=9
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 9
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997247
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=10
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 10
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997248
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=11
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 11
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997249
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=12
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 12
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997250
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=13
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 13
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997251
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=14
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 14
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997252
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=15
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 15
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997253
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=16
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 16
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997254
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=17
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 17
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997255
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=18
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 18
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997256
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=19
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 19
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997257
+[HEARTBEAT RX] deviceId='forge-type-i-01' sequenceNumber=20
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 20
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997258
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 21
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997259
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 22
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997260
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 23
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997261
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 24
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997262
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 25
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997263
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 26
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997264
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 27
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[HEARTBEAT RX] deviceId='stamp-eio' sequenceNumber=1997265
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 28
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
