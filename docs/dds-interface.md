@@ -7,7 +7,7 @@ The controller opens `TmsParticipantLibrary::TmsParticipant`. Its domain referen
 | Exchange | XML topic / bound endpoint | Current Type V handling |
 | --- | --- | --- |
 | Identity/discovery | `DeviceInfo` / `DeviceInfoReader`, `DeviceInfoWriter` | Publishes controller identity; registers source role 2 or `ROLE_SOURCE`; also feeder/load/storage/other devices. |
-| Heartbeat | `Heartbeat` / `HeartbeatReader`, `HeartbeatWriter` | Publishes `deviceId=controller`, loop `sequenceNumber`. Monitor mode prints each decoded external deviceId/sequenceNumber independently of DeviceInfo and ignores controller self-heartbeats. Existing feeder tracking remains; no source-role registration or source freshness policy is added. |
+| Heartbeat | `Heartbeat` / `HeartbeatReader`, `HeartbeatWriter` | Publishes `deviceId=controller`, loop `sequenceNumber`. Incoming `deviceId` and `sequenceNumber` update feeder state only; no source heartbeat timestamp/sequence tracking. |
 | Source state | `EnergyStartStopState` / `EnergyStartStopStateReader` | Maps numeric `presentLevel` 1–7 to UNKNOWN, OFF, WARM, IDLE, READY, READY_SYNCED, OPERATIONAL for known sources. |
 | AC measurements | `AcMeasurementUpdate` / `ACMeasurementUpdateTypeReader` | Uses `deviceId`, first `externalMeasurement`, `portNumber`, `line`; sums real/reactive watts/vars into kW/kVAR for known sources, loads, storage; stores feeder phases. |
 | Source command | `EnergyStartStopRequest` / `EnergyStartStopRequestWriter` | Sends nested `requestId` with requester/target/config, plus `sequenceId`, `fromLevel`, `toLevel`, `switchConditions`. Automatic requests require `--enable-control`. |

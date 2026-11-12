@@ -1,6 +1,6 @@
 # FORGE-IV — SS6 Type V controller
 
-SS6 coordinates microgrid source and feeder devices over RTI Connext DDS. The Sprint 2 milestone is Type V displaying Trevor’s Type I heartbeats over wired IPv4 in `--monitor-only` mode, using the baseline XML and domain 0. DeviceInfo decoding is a separate diagnostic question. Source state/AC measurements and a manual command/reply exchange follow; IPv6 remains optional future work.
+SS6 coordinates microgrid source and feeder devices over RTI Connext DDS. The next prototype connects Type I source software to Type V for discovery and heartbeat exchange over an IPv6 network, then source state and AC measurements, and eventually a manually triggered command/reply exchange.
 
 | Responsibility | Owner |
 | --- | --- |
@@ -49,7 +49,7 @@ Always pass the XML argument shown above. The active file's fallback is `../xml/
 
 ## Current limitations
 
-Sources are discovered through `DeviceInfo`, with source state and AC measurements consumed for discovered IDs. Monitor mode prints `[HEARTBEAT RX] deviceId=... sequenceNumber=...` for every decoded external heartbeat, even before DeviceInfo discovery; own `controller` heartbeats are ignored. Heartbeat freshness is still tracked for the feeder only. Unexpected Python reader errors now report reader/topic/operation context on stderr with a 30-second repeat limit; normal wait timeouts and empty reads stay quiet. Native RTI errors may bypass Python exception handling and remain visible on stderr. The reply parser still differs from the XML's top-level fields. The baseline XML, archived code, and measurement logs were preserved.
+Sources are discovered through `DeviceInfo`, with source state and AC measurements consumed for discovered IDs. Heartbeat freshness is currently tracked for the feeder only. Unexpected Python reader errors now report reader/topic/operation context on stderr with a 30-second repeat limit; normal wait timeouts and empty reads stay quiet. Native RTI errors may bypass Python exception handling and remain visible on stderr. The reply parser still differs from the XML's top-level fields. The baseline XML, archived code, and measurement logs were preserved.
 
 IPv6 host reachability and DDS communication require separate checks. This checkout does not establish IPv6-only DDS transport configuration or successful Type I interoperability.
 
