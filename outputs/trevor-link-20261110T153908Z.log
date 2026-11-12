@@ -1,0 +1,190 @@
+Start '/home/forge/FORGE-IV-SS6/controller_typev_interface_patched_v2.py'
+Using XML: Capstone/xml/tmg_xml_24_mar.xml
+[MODE] MONITOR ONLY — command requests blocked
+Publishing controller DeviceInfo
+Type V controller interface loop started...
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 1
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] RTIXCdrInterpreter_checkPrimitiveRange:tms::ControlHardwareInfo:minTemperature deserialization error. Primitive value nan outside valid range [-273.000000, 10000.000000]
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] RTIXCdrInterpreter_fastDeserializeSample:tms::ControlHardwareInfo:minTemperature deserialization error
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] RTIXCdrInterpreter_fullDeserializeSample:tms::DeviceInfo:controlHardware deserialization error
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] DDS_DynamicData2TypePlugin_serialized_sample_to_keyhash:deserialization error: sample
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_serializedKeyOrSampleToKeyHash:!serialized sample to keyhash
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_getSampleKeyHashes:!serialized key/sample to keyhash
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_storeInlineQos:!get sample keyHashes
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_storeSampleToEntry:!store inline qos in entry
+[0x0101F9B8,0xBA3EE08C,0x5F205CC7:0x80000007{E=DR,I=21}|RECEIVE FROM 0x01060A02,0x145B0000,0x0B6E0001:0x00000902] PRESCstReaderCollator_newData:!get entries
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 2
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 3
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 4
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 5
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 6
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 7
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 8
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 9
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 10
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 11
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 12
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 13
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 14
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 15
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 16
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 17
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 18
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 19
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 20
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 21
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
+
+================ TYPE V CONTROLLER STATUS ================
+Mode: MONITOR ONLY — command requests blocked
+Loop: 22
+Feeder: not discovered
+Sources: none discovered
+==========================================================
+
